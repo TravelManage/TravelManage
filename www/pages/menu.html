@@ -1,0 +1,43 @@
+<ons-page modifier="menu-page">
+    <ons-toolbar modifier="transparent">
+    </ons-toolbar>
+
+    <ons-list class="menu-list">
+        <ons-list-item class="menu-item" ng-click="menu.close()">
+            <ons-icon icon="fa-home"></ons-icon>
+            Home
+        </ons-list-item>
+
+        <ons-list-item class="menu-item" ng-click="openGroups()">
+            <ons-icon icon="fa-users"></ons-icon>
+            Manage Groups
+        </ons-list-item>
+
+        <ons-list-item class="menu-item" ng-click="openPersonList()">
+            <ons-icon icon="fa-user"></ons-icon>
+            Manage People
+        </ons-list-item>
+
+        <ons-list-item class="menu-item" ng-click="openTrips()">
+            <ons-icon icon="fa-plane"></ons-icon>
+            Manage Trips
+        </ons-list-item>
+    </ons-list>
+
+    <br>
+
+    <ons-list class="bottom-menu-list">
+        <ons-list-item class="bottom-menu-item" ng-click="menu.close()">
+            Settings
+            <div class="notification menu-notification">3</div>
+        </ons-list-item>
+
+        <ons-list-item class="bottom-menu-item" ng-click="menu.close()">
+            Help
+        </ons-list-item>
+
+        <ons-list-item class="bottom-menu-item" ng-click="menu.close()">
+            Send feedback
+        </ons-list-item>
+    </ons-list>
+</ons-page>

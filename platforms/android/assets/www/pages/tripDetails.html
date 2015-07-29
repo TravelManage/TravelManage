@@ -1,0 +1,57 @@
+<ons-page ng-controller="TripDetailController">
+    <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">Trip Details</div>
+        <div class="right">
+            <ons-toolbar-button>
+                <ons-icon icon="ion-android-star" fixed-width="false" style="font-size: 26px; vertical-align: -4px" ng-click="showEditForm()"></ons-icon>
+            </ons-toolbar-button>
+            <ons-toolbar-button>
+                <ons-icon icon="ion-archive" fixed-width="false" style="font-size: 26px; vertical-align: -4px" ng-click="showEditForm()"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+
+    <ons-row class="profile-wrapper">
+        <ons-col>
+            <div class="profile-name">{{tripDetails.name}}</div>
+            <div class="profile-email"><ons-icon icon="fa-map-marker"></ons-icon> {{tripDetails.from}} - {{tripDetails.to}}</div>
+            <div class="profile-email"><ons-icon icon="fa-calendar-o"></ons-icon> {{tripDetails.startDate}} - {{tripDetails.endDate}}</div>
+        </ons-col>
+    </ons-row>
+
+    <div class="profile-wrapper">
+        <button class="button button--quiet btn-left" ng-click="showEditForm()">Edit</button> |
+        <button class="button button--quiet btn-left">Delete</button>
+    </div>
+
+
+    <br/>
+    <div class="settings-header">Groups in this trip</div>
+
+    <ons-list modifier="inset" class="settings-list">
+        <ons-list-item modifier="chevron" ng-repeat="group in tripDetails.groups" ng-click="showGroupDetails()">
+            {{group.name}}
+        </ons-list-item>
+        <ons-list-item class="end-item" modifier="chevron" ng-click="editGroupList()">
+            Manage Group
+        </ons-list-item>
+    </ons-list>
+
+    <br/>
+    <div class="settings-header">Employees in this trip</div>
+
+    <ons-list modifier="inset" class="settings-list">
+        <ons-list-item modifier="chevron" ng-repeat="emp in tripDetails.employees">
+            {{emp.lastName}}, {{emp.firstName}}
+        </ons-list-item>
+        <ons-list-item class="end-item" modifier="chevron" ng-click="editEmpList()">
+            Manage Employees
+        </ons-list-item>
+    </ons-list>
+
+    <br/>
+    <br/>
+
+
+</ons-page>

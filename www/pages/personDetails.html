@@ -1,0 +1,83 @@
+<ons-page ng-controller="PersonDetailsController">
+    <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">Settings</div>
+
+        <div class="right">
+            <ons-toolbar-button>
+                <ons-icon icon="ion-android-star" fixed-width="false" style="font-size: 26px; vertical-align: -4px" ng-click="showEditForm()"></ons-icon>
+            </ons-toolbar-button>
+            <ons-toolbar-button>
+                <ons-icon icon="ion-archive" fixed-width="false" style="font-size: 26px; vertical-align: -4px" ng-click="showEditForm()"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+
+    <ons-row class="profile-wrapper">
+        <ons-col width="60px" class="profile-image-wrapper">
+            <img src="images/profile-image-05.png" class="profile-image">
+        </ons-col>
+
+        <ons-col>
+            <div class="profile-name">{{details.lastName}}, {{details.firstName}}</div>
+            <div class="profile-email">{{details.email}}</div>
+        </ons-col>
+    </ons-row>
+
+    <div class="profile-wrapper">
+        <button class="button button--quiet btn-left" ng-click="showEditForm()">Edit</button>
+        <button class="button button--quiet btn-left">Delete</button>
+    </div>
+
+    <br>
+
+    <div class="settings-header">Assigned to Group</div>
+
+    <ons-list modifier="inset" class="settings-list">
+        <ons-list-item modifier="chevron" ng-repeat="group in details.groups" ng-click="showGroupDetails()">
+            {{group.name}}
+            <span class="list-item-note">
+                <span class="notification">{{group.peopleCount}}</span>
+            </span>
+        </ons-list-item>
+        <ons-list-item class="end-item" modifier="chevron" ng-click="editGroupList()">
+            Manage Group
+        </ons-list-item>
+    </ons-list>
+
+    <br>
+
+    <div class="settings-header">Assigned to Trips</div>
+
+    <ons-list modifier="inset" class="settings-list">
+        <ons-list-item modifier="chevron" ng-repeat="trip in details.trips" ng-click="showTripDetails()">
+            {{trip.name}}
+            <span class="list-item-note">
+                <span class="notification">{{trip.groupCount}}</span>
+            </span>
+        </ons-list-item>
+    </ons-list>
+
+    <br>
+
+    <ons-list modifier="inset" class="settings-list">
+        <ons-list-item modifier="chevron">
+            Accounts
+        </ons-list-item>
+        <ons-list-item >
+            <ons-col>
+                <p>Total Due: {{details.accounts.total}}</p>
+                <hr/>
+                <p>Payments:</p>
+                <p ng-repeat="pay in details.accounts.payments">{{pay.date}}: {{pay.amount}}</p>
+                <hr/>
+                <p>Total Due: {{details.accounts.due}}</p>
+            </ons-col>
+        </ons-list-item>
+    </ons-list>
+
+
+    <br/>
+    <br/>
+
+</ons-page>

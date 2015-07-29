@@ -1,0 +1,24 @@
+<div class="navigation-bar">
+    <div class="navigation-bar__center">
+
+        <input type="search" class="search-input" style="width: 96%; margin: 6px auto 6px auto;" placeholder="Search">
+
+    </div>
+</div>
+
+
+<ons-scroller>
+    <ons-list>
+        <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="person in personList" ng-click="showPerson()">
+            <div class="list-item-content {{person.status}}">
+                <h2 class="name">
+                    {{person.lastName}}, {{person.firstName}}
+                </h2>
+                <p>email: {{person.email}}</p>
+                <p>phone: {{person.phone}}</p>
+                <p>location: {{person.location}}</p>
+
+            </div>
+        </ons-list-item>
+    </ons-list>
+</ons-scroller>

@@ -1,0 +1,43 @@
+<ons-page ng-controller="SchedulerController" class="person">
+
+    <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">Scheduler</div>
+        <div class="right">
+            <ons-toolbar-button>
+                <ons-icon icon="fa-plus" fixed-width="false" style="font-size: 26px; vertical-align: -4px" ng-click="showEditForm()"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+
+    <div class="page-content">
+        <ons-list class="plan-list">
+            <ons-list-item modifier="chevron" class="plan" ng-repeat="data in scheduleList">
+                <ons-row>
+                    <ons-col width="120px" class="plan-left">
+                        <div class="plan-date">{{data.date}}</div>
+                        <div class="plan-date">{{data.time}}</div>
+                    </ons-col>
+
+                    <ons-col width="6px" class="plan-center {{data.status}}">
+                    </ons-col>
+
+                    <ons-col class="plan-right">
+                        <div class="plan-name">{{data.location}}</div>
+
+                        <!--<div class="plan-info">
+                            <div ng-hide="a % 4 == 0">
+                                <ons-icon icon="fa-phone"></ons-icon>123-456-789
+                            </div>
+
+                            <div ng-hide="a % 3 == 0">
+                                <ons-icon icon="fa-map-marker"></ons-icon>Moscone, San Francisco
+                            </div>
+                        </div>-->
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+
+        </ons-list>
+    </div>
+</ons-page>

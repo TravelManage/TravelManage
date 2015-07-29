@@ -1,0 +1,54 @@
+<ons-page ng-controller="PersonController" class="person">
+
+    <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">Manage People</div>
+        <div class="right">
+            <ons-toolbar-button>
+                <ons-icon icon="fa-plus" fixed-width="false" style="font-size: 26px; vertical-align: -4px"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+
+
+    <div class="custom tab-bar tab-bar--bottom tab-bar--top-border">
+        <label class="tab-bar__item tab-bar--top-border__item">
+            <input type="radio" name="top-tab-bar-b" checked="checked">
+            <button class="tab-bar__button tab-bar--top-border__button">
+                Active
+            </button>
+        </label>
+
+        <label class="tab-bar__item tab-bar--top-border__item">
+            <input type="radio" name="top-tab-bar-b">
+            <button class="tab-bar__button tab-bar--top-border__button">
+                Tracking
+            </button>
+        </label>
+
+        <label class="tab-bar__item tab-bar--top-border__item">
+            <input type="radio" name="top-tab-bar-b">
+            <button class="tab-bar__button tab-bar--top-border__button">
+                Archived
+            </button>
+        </label>
+    </div>
+
+    <div class="page-content">
+        <ons-scroller>
+            <ons-list>
+                <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="person in personList" ng-click="showPerson()">
+                    <div class="list-item-content {{person.status}}">
+                        <h2 class="name">
+                            {{person.lastName}}, {{person.firstName}}
+                        </h2>
+                        <p>email: {{person.email}}</p>
+                        <p>phone: {{person.phone}}</p>
+                        <p>location: {{person.location}}</p>
+
+                    </div>
+                </ons-list-item>
+            </ons-list>
+        </ons-scroller>
+    </div>
+</ons-page>
