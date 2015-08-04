@@ -144,7 +144,7 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
     };
 
     $scope.editTripList = function(){
-        AppService.openEditList("groupDetails", "tripManage");
+        AppService.openEditList("groupDetails", "tripManager");
     };
 
     ons.ready(function(a) {
@@ -219,7 +219,7 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
     };
 
     $scope.showGroupDetails = function(){
-
+        app.baseNav.pushPage("pages/groupDetails.html");
     };
 
     $scope.editGroupList = function(){
@@ -241,12 +241,12 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
 });
 
 module.controller('EditTripListController', function($scope, $http, AppService) {
-    $scope.groupList = [];
+    $scope.tripList = [];
 
 
     $scope.fetchData= function(){
         $http({method: 'GET', url: 'data/tripList.json'}).success(function(data, status, headers, config) {
-            $scope.empList = data;
+            $scope.tripList = data;
 
         }).error(function(data, status, headers, config) {
         });

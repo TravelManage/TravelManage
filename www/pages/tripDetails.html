@@ -20,10 +20,20 @@
         </ons-col>
     </ons-row>
 
-    <div class="profile-wrapper">
-        <button class="button button--quiet btn-left" ng-click="showEditForm()">Edit</button> |
-        <button class="button button--quiet btn-left">Delete</button>
-    </div>
+    <ons-row class="profile-wrapper" style="margin-top:20px;">
+        <ons-col>
+
+            <div class="button-bar">
+                <div class="button-bar__item">
+                    <button class="button-bar__button" ng-click="showEditForm()">Edit</button>
+                </div>
+
+                <div class="button-bar__item">
+                    <button class="button-bar__button">Delete</button>
+                </div>
+            </div>
+        </ons-col>
+    </ons-row>
 
 
     <br/>
@@ -42,7 +52,7 @@
     <div class="settings-header">Employees in this trip</div>
 
     <ons-list modifier="inset" class="settings-list">
-        <ons-list-item modifier="chevron" ng-repeat="emp in tripDetails.employees">
+        <ons-list-item ng-repeat="emp in tripDetails.employees">
             {{emp.lastName}}, {{emp.firstName}}
         </ons-list-item>
         <ons-list-item class="end-item" modifier="chevron" ng-click="editEmpList()">

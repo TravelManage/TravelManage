@@ -1,6 +1,6 @@
 <ons-page ng-controller="EditTripListController">
     <ons-toolbar>
-        <div class="center">Groups</div>
+        <div class="center">Trips</div>
         <div class="right">
             <ons-toolbar-button ng-click="confirm()">
                 Done
@@ -12,9 +12,9 @@
 
         <ons-list-item modifier="tappable" ng-repeat="trip in tripList">
             <label class="checkbox checkbox--list-item">
-                <input type="checkbox" ng-model="group.isSelected">
+                <input type="checkbox" ng-model="trip.isActive">
                 <div class="checkbox__checkmark checkbox--list-item__checkmark"></div>
-                {{group.name}}
+                {{trip.name}}
             </label>
         </ons-list-item>
 
