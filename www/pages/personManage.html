@@ -1,6 +1,6 @@
 <ons-page ng-controller="EditPersonListController">
-    <ons-toolbar>
-        <div class="center">People</div>
+    <ons-toolbar class="include-search">
+        <div class="center">Peoples</div>
         <div class="right">
             <ons-toolbar-button ng-click="confirm()">
                 Done
@@ -8,16 +8,23 @@
         </div>
     </ons-toolbar>
 
-    <ons-list>
+    <div class="search-bar">
+        <input type="search" ng-model="name" class="search-input" style="width: 96%; margin: 6px auto 6px auto;" placeholder="Search">
+    </div>
 
-        <ons-list-item modifier="tappable" ng-repeat="person in personList">
-            <label class="checkbox checkbox--list-item">
-                <input type="checkbox" ng-model="group.isSelected">
-                <div class="checkbox__checkmark checkbox--list-item__checkmark"></div>
-                {{person.lastName}}, {{person.firstName}}
-            </label>
-        </ons-list-item>
+    <div class="after-search-bar">
+        <ons-list>
 
-    </ons-list>
+            <ons-list-item modifier="tappable" ng-repeat="person in personList | filter:name">
+                <label class="checkbox checkbox--list-item">
+                    <input type="checkbox" ng-model="group.isSelected">
+                    <div class="checkbox__checkmark checkbox--list-item__checkmark"></div>
+                    {{person.lastName}}, {{person.firstName}}
+                </label>
+            </ons-list-item>
+
+        </ons-list>
+    </div>
+
 
 </ons-page>
