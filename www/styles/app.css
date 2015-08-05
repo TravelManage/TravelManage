@@ -204,6 +204,8 @@ input[type=text], input[type=password] {
 }
 
 /*Person List*/
+
+.person .tab-bar__item.active{border-top:blue 2px solid;}
 .person .list__item{padding:0; margin: 0; line-height: 1; }
 .person .list-item-content{padding:10px;}
 .person .list-item-content.red{

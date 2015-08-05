@@ -11,7 +11,20 @@
     </ons-toolbar>
 
 
-    <div class="custom tab-bar tab-bar--bottom tab-bar--top-border">
+    <ons-tabbar>
+        <ons-tab page="personList.html" active="true">
+            Active
+        </ons-tab>
+        <ons-tab page="personList.html">
+            <div class="notification reply-notification" ons-tab-inactive>4</div>
+            Tracking
+        </ons-tab>
+        <ons-tab page="personList.html">
+            Archived
+        </ons-tab>
+    </ons-tabbar>
+
+    <!--<div class="custom tab-bar tab-bar--bottom tab-bar--top-border">
         <label class="tab-bar__item tab-bar--top-border__item">
             <input type="radio" name="top-tab-bar-b" checked="checked">
             <button class="tab-bar__button tab-bar--top-border__button">
@@ -32,23 +45,26 @@
                 Archived
             </button>
         </label>
-    </div>
+    </div>-->
 
-    <div class="page-content">
-        <ons-scroller>
-            <ons-list>
-                <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="person in personList" ng-click="showPerson()">
-                    <div class="list-item-content {{person.status}}">
-                        <h2 class="name">
-                            {{person.lastName}}, {{person.firstName}}
-                        </h2>
-                        <p>email: {{person.email}}</p>
-                        <p>phone: {{person.phone}}</p>
-                        <p>location: {{person.location}}</p>
+    <ons-template id="personList.html">
+        <div class="page-content">
+            <ons-scroller>
+                <ons-list>
+                    <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="person in personList" ng-click="showPerson()">
+                        <div class="list-item-content {{person.status}}">
+                            <h2 class="name">
+                                {{person.lastName}}, {{person.firstName}}
+                            </h2>
+                            <p>email: {{person.email}}</p>
+                            <p>phone: {{person.phone}}</p>
+                            <p>location: {{person.location}}</p>
 
-                    </div>
-                </ons-list-item>
-            </ons-list>
-        </ons-scroller>
-    </div>
+                        </div>
+                    </ons-list-item>
+                </ons-list>
+            </ons-scroller>
+        </div>
+    </ons-template>
+
 </ons-page>

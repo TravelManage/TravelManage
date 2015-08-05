@@ -24,10 +24,20 @@
         </ons-col>
     </ons-row>
 
-    <div class="profile-wrapper">
-        <button class="button button--quiet btn-left" ng-click="showEditForm()">Edit</button>
-        <button class="button button--quiet btn-left">Delete</button>
-    </div>
+    <ons-row class="profile-wrapper" style="margin-top:20px;">
+        <ons-col>
+
+            <div class="button-bar">
+                <div class="button-bar__item">
+                    <button class="button-bar__button" ng-click="showEditForm()">Edit</button>
+                </div>
+
+                <div class="button-bar__item">
+                    <button class="button-bar__button">Delete</button>
+                </div>
+            </div>
+        </ons-col>
+    </ons-row>
 
     <br>
 
