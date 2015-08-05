@@ -10,62 +10,54 @@
         </div>
     </ons-toolbar>
 
-    <div class="custom tab-bar tab-bar--bottom tab-bar--top-border">
-        <label class="tab-bar__item tab-bar--top-border__item">
-            <input type="radio" name="top-tab-bar-b" checked="checked">
-            <button class="tab-bar__button tab-bar--top-border__button">
-                Active
-            </button>
-        </label>
+    <ons-tabbar>
+        <ons-tab page="tripList.html" active="true">
+            Active
+        </ons-tab>
+        <ons-tab page="tripList.html">
+            Tracking
+        </ons-tab>
+        <ons-tab page="tripList.html">
+            Archived
+        </ons-tab>
+    </ons-tabbar>
 
-        <label class="tab-bar__item tab-bar--top-border__item">
-            <input type="radio" name="top-tab-bar-b">
-            <button class="tab-bar__button tab-bar--top-border__button">
-                Tracking
-            </button>
-        </label>
+    <ons-template id="tripList.html">
+        <div class="page-content">
+            <ons-scroller>
+                <ons-list class="plan-list">
+                    <ons-list-item modifier="chevron" class="plan" ng-repeat="trip in tripList" ng-click="showDetails()">
+                        <ons-row>
+                            <ons-col width="80px" class="plan-left">
+                                <div class="plan-date">{{trip.startDate}}</div>
+                                <div class="plan-duration">{{trip.endDate}}</div>
+                            </ons-col>
 
-        <label class="tab-bar__item tab-bar--top-border__item">
-            <input type="radio" name="top-tab-bar-b">
-            <button class="tab-bar__button tab-bar--top-border__button">
-                Archived
-            </button>
-        </label>
-    </div>
+                            <ons-col width="6px" class="plan-center" class="{{trip.status}}">
+                            </ons-col>
 
-    <div class="page-content">
-        <ons-scroller>
-            <ons-list class="plan-list">
-                <ons-list-item modifier="chevron" class="plan" ng-repeat="trip in tripList" ng-click="showDetails()">
-                    <ons-row>
-                        <ons-col width="80px" class="plan-left">
-                            <div class="plan-date">{{trip.startDate}}</div>
-                            <div class="plan-duration">{{trip.endDate}}</div>
-                        </ons-col>
+                            <ons-col class="plan-right">
+                                <div class="plan-name">{{trip.name}}</div>
 
-                        <ons-col width="6px" class="plan-center" class="{{trip.status}}">
-                        </ons-col>
+                                <div class="plan-info">
+                                    <div>
+                                        Group: {{trip.groupCount}}
+                                    </div>
+                                    <div>
+                                        People: {{trip.peopleCount}}
+                                    </div>
 
-                        <ons-col class="plan-right">
-                            <div class="plan-name">{{trip.name}}</div>
-
-                            <div class="plan-info">
-                                <div>
-                                    Group: {{trip.groupCount}}
+                                    <div>
+                                        <ons-icon icon="fa-map-marker"></ons-icon> {{trip.from}} - {{trip.to}}
+                                    </div>
                                 </div>
-                                <div>
-                                    People: {{trip.peopleCount}}
-                                </div>
+                            </ons-col>
+                        </ons-row>
+                    </ons-list-item>
 
-                                <div>
-                                    <ons-icon icon="fa-map-marker"></ons-icon> {{trip.from}} - {{trip.to}}
-                                </div>
-                            </div>
-                        </ons-col>
-                    </ons-row>
-                </ons-list-item>
+                </ons-list>
+            </ons-scroller>
+        </div>
+    </ons-template>
 
-            </ons-list>
-        </ons-scroller>
-    </div>
 </ons-page>

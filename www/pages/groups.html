@@ -10,41 +10,33 @@
         </div>
     </ons-toolbar>
 
-    <div class="custom tab-bar tab-bar--bottom tab-bar--top-border">
-        <label class="tab-bar__item tab-bar--top-border__item">
-            <input type="radio" name="top-tab-bar-b" checked="checked">
-            <button class="tab-bar__button tab-bar--top-border__button">
-                Active
-            </button>
-        </label>
+    <ons-tabbar>
+        <ons-tab page="groupList.html" active="true">
+            Active
+        </ons-tab>
+        <ons-tab page="groupList.html">
+            Tracking
+        </ons-tab>
+        <ons-tab page="groupList.html">
+            Archived
+        </ons-tab>
+    </ons-tabbar>
 
-        <label class="tab-bar__item tab-bar--top-border__item">
-            <input type="radio" name="top-tab-bar-b">
-            <button class="tab-bar__button tab-bar--top-border__button">
-                Tracking
-            </button>
-        </label>
+    <ons-template id="groupList.html">
+        <div class="page-content">
+            <ons-scroller>
+                <ons-list>
+                    <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="group in groupList" ng-click="showDetails()">
+                        <div class="list-item-content {{group.status}}">
+                            <h2 class="name">
+                                {{group.name}}
+                            </h2>
+                            <p>People in group: {{group.peopleCount}}</p>
+                        </div>
+                    </ons-list-item>
+                </ons-list>
+            </ons-scroller>
+        </div>
+    </ons-template>
 
-        <label class="tab-bar__item tab-bar--top-border__item">
-            <input type="radio" name="top-tab-bar-b">
-            <button class="tab-bar__button tab-bar--top-border__button">
-                Archived
-            </button>
-        </label>
-    </div>
-
-    <div class="page-content">
-        <ons-scroller>
-            <ons-list>
-                <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="group in groupList" ng-click="showDetails()">
-                    <div class="list-item-content {{group.status}}">
-                        <h2 class="name">
-                            {{group.name}}
-                        </h2>
-                        <p>People in group: {{group.peopleCount}}</p>
-                    </div>
-                </ons-list-item>
-            </ons-list>
-        </ons-scroller>
-    </div>
 </ons-page>
