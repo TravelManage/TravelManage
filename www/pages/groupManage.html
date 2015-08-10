@@ -1,5 +1,5 @@
 <ons-page ng-controller="EditGroupListController">
-    <ons-toolbar class="include-search">
+    <ons-toolbar>
         <div class="center">Groups</div>
         <div class="right">
             <ons-toolbar-button ng-click="confirm()">
@@ -8,11 +8,15 @@
         </div>
     </ons-toolbar>
 
-    <div class="search-bar">
-        <input type="search" ng-model="name" class="search-input" style="width: 96%; margin: 6px auto 6px auto;" placeholder="Search">
-    </div>
+    <ons-bottom-toolbar>
+        <div class="navigation-bar">
+            <div class="navigation-bar__center">
+                <input type="search" class="search-input" style="width: 96%; margin: 6px auto 6px auto;" placeholder="Search">
+            </div>
+        </div>
+    </ons-bottom-toolbar>
 
-    <div class="after-search-bar">
+    <div>
         <ons-list>
 
             <ons-list-item modifier="tappable" ng-repeat="group in groupList | filter:name">
