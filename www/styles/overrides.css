@@ -4,18 +4,4 @@ h1{font-size: 18px;}
 h2{font-size: 16px;}
 h3{font-size: 14px;}
 p{font-size: 12px;}
-.tab-bar{position: fixed; z-index: 100;}
-
-
-ons-toolbar.include-search ~ .page__content{
-    margin-top: 45px;
-}
-.search-bar {
-    width: 100%;
-    position: fixed;
-    display: block;
-    margin-top: -45px;
-}
-.after-search-bar {
-    margin-top: -10px;
-}
+.tab-bar{position: fixed; z-index: 200;}
