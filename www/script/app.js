@@ -1,8 +1,20 @@
+var serverLink="http://52.11.28.99:8080/JsonAPI/customer/travel/";
+var appObject = {
+    calls:{
+        login:serverLink+"loginauth"
+    }
+};
+
+
 var module = ons.bootstrap('my-app', ['onsen']);
 
-app.factory('AppService', function() {
+module.factory('AppService', function() {
     var callFromPage = "";
+    var userData={};
     return{
+        saveUser: function(data){
+            userData=data;
+        },
         editGroupList: function(pageLink){
             callFromPage = pageLink;
             app.baseNav.pushPage("pages/groupManage.html");

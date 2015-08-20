@@ -1,24 +1,30 @@
-module.controller('LoginController', function($scope, $http, ServerCalls) {
+module.controller('LoginController', function($scope, $http, AppService) {
+
+    $scope.data = {
+        username: "hafiz",
+        password: "gggg"
+    };
+
+
     $scope.login = function(){
 
-        var url = appObj.serverLink+ 'loginauth';
-
-        var data = {
-            "username": "hafiz",
-            "password": "gggg"
-        };
+        var url = appObject.calls.login;
 
         $http({
             'method': 'POST',
             'url': url,
-            'data': data,
+            'data': $scope.data,
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
-                console.log(data);
+            //console.log(data);
+            if(data.status=="success")
+            {
+                AppService.saveUser(data);
+                app.mainNav.pushPage("pages/home.html");
+            }
 
-            }).error(function(data, status, headers, config) {
-            });
-        //app.mainNav.pushPage("pages/home.html");
+        }).error(function(data, status, headers, config) {});
+        //
 
     }
 
