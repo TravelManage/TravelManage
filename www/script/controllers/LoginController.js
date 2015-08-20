@@ -32,8 +32,3 @@ module.controller('LoginController', function($scope, $http, AppService) {
         app.mainNav.pushPage("pages/companyEditForm.html");
     }
 });
-
-/*module.controller('PersonController', function($scope) {
- $scope.personListPage ="pages/personList.html";
- });*/
-
