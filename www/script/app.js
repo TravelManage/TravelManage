@@ -1,7 +1,12 @@
 var serverLink="http://52.11.28.99:8080/JsonAPI/customer/travel/";
 var appObject = {
+    LOAD_STATIC:false,
     calls:{
-        login:serverLink+"loginauth"
+        login:serverLink+"loginauth",
+        createUser:serverLink+"usercreate",
+        person:{
+            fetch:serverLink+"fetchall"
+        }
     }
 };
 
