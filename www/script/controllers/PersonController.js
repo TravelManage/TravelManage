@@ -3,32 +3,14 @@
  */
 module.controller('PersonController', function($scope, $http) {
 
-
-    $scope.data=    {
-        "type": "profile",
-        "companyid": "1",
-        "count": "10"
-    };
-
     $scope.personList=[];
 
-
-    var url = appObject.calls.person.fetch;
-    if(appObject.LOAD_STATIC){url ='data/personList.json'; }
     $scope.fetchData = function(){
-        $http({
-            'method': 'POST',
-            'url': url,
-            'data': $scope.data,
-            'dataType': 'json'
-        })
-            .success(function(data, status, headers, config) {
-                console.log(data);
-                //$scope.personList = data.list;
+        $http({method: 'GET', url: 'data/personList.json'}).success(function(data, status, headers, config) {
+            $scope.personList = data.list;
 
-            })
-            .error(function(data, status, headers, config) {
-            });
+        }).error(function(data, status, headers, config) {
+        });
     };
 
     $scope.showPerson = function(){
