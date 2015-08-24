@@ -32,3 +32,15 @@ module.controller('LoginController', function($scope, $http, AppService) {
         app.mainNav.pushPage("pages/companyEditForm.html");
     }
 });
+
+module.controller('CompanyEditController', function($scope, $http, AppService) {
+
+    $scope.data = {
+        username: "hafiz",
+        password: "gggg"
+    };
+
+
+});
+
+
