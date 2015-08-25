@@ -15,29 +15,18 @@
     <link rel="stylesheet" href="styles/overrides.css"/>
     <link rel="stylesheet" href="styles/app.css"/>
 
-    <script type='application/javascript' src='lib/onsenui/js/fastclick.js'></script>
-
     <script type="text/javascript" src="cordova.js"></script>
     <script src="lib/onsenui/js/angular/angular.min.js"></script>
     <script src="lib/onsenui/js/onsenui.min.js"></script>
 
-    <script>
-    </script>
+    <script type="text/javascript" src="script/app.js"></script>
+    <script type="text/javascript" src="script/controllers/LoginController.js"></script>
+    <script type="text/javascript" src="script/controllers/PersonController.js"></script>
 </head>
 
 <body ng-controller="AppController">
-<ons-navigator title="Navigator" var="app.mainNav" page="pages/signup.html"></ons-navigator>
 
-<script type="text/javascript" src="script/app.js"></script>
-<script type="text/javascript" src="script/controllers/LoginController.js"></script>
-<script type="text/javascript" src="script/controllers/PersonController.js"></script>
+    <ons-navigator title="Navigator" var="app.mainNav" page="pages/signup.html"></ons-navigator>
 
-<script>
-   /* if ('addEventListener' in document) {
-        document.addEventListener('DOMContentLoaded', function() {
-            FastClick.attach(document.body);
-        }, false);
-    }*/
-</script>
 </body>
 </html>
