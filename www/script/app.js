@@ -1,4 +1,4 @@
-var serverLink="http://52.11.28.99:8080/JsonAPI/customer/travel/";
+var serverLink="http://54.200.69.12:8080/JsonAPI/customer/travel/";
 var appObject = {
     calls:{
         login:serverLink+"loginauth"
@@ -55,6 +55,12 @@ module.controller('AppController', function($scope, AppService) {
         app.baseNav.pushPage("pages/trips.html");
         menu.close();
     };
+
+    $scope.createUser = function(){
+        app.baseNav.pushPage("pages/createUser.html");
+        menu.close();
+    };
+
 
 
 });
