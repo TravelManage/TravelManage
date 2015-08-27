@@ -24,6 +24,9 @@ module.controller('PersonController', function($scope, $http) {
         })
             .success(function(data, status, headers, config) {
                 console.log(data);
+                if(data.status="success"){
+                    $scope.personList= data.listModel;
+                }
                 //$scope.personList = data.list;
 
             })
@@ -87,8 +90,8 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
         "type":"people",
         "loginid": "1014",
         "companyid": "106",
-        "firstname":"first",
-        "lastname":"last",
+        "firstname":"John",
+        "lastname":"Smith",
         "email":"fff",
         "landline":"55555",
         "cell":"66666",
@@ -99,8 +102,7 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
         "pin":"",
         "country":"",
         "profileid":""
-    }
-    ;
+    };
 
 
     $scope.submit= function(){
