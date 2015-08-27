@@ -4,10 +4,10 @@
 module.controller('PersonController', function($scope, $http) {
 
 
-    $scope.data=    {
-        "type": "profile",
-        "companyid": "1",
-        "count": "10"
+    $scope.data = {
+        "type": "people",
+        "companyid": "106",
+        "count": ""
     };
 
     $scope.personList=[];
@@ -85,11 +85,11 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
         "action": "add",
         "object":"profile",
         "type":"people",
-        "loginid": "1007",
-        "companyid": "1",
-        "firstname":"firstS",
-        "lastname":"lastS",
-        "email":"fff@123.com",
+        "loginid": "1014",
+        "companyid": "106",
+        "firstname":"first",
+        "lastname":"last",
+        "email":"fff",
         "landline":"55555",
         "cell":"66666",
         "address1":"fasdfasdf",
@@ -99,7 +99,8 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
         "pin":"",
         "country":"",
         "profileid":""
-    };
+    }
+    ;
 
 
     $scope.submit= function(){
@@ -112,9 +113,10 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
                 //console.log(data);
+                console.log(data);
                 if(data.status=="success")
                 {
-                    app.baseNav.popPage();
+                    //app.baseNav.popPage();
                 }
 
             }).error(function(data, status, headers, config) {});

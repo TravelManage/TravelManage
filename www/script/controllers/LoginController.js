@@ -1,8 +1,8 @@
 module.controller('LoginController', function($scope, $http, AppService) {
 
     $scope.data = {
-        username: "hafiz",
-        password: "gggg"
+        username: "spikeeee1",
+        password: "abu"
     };
 
 
