@@ -5,7 +5,8 @@ var appObject = {
         login:serverLink+"loginauth",
         createUser:serverLink+"usercreate",
         person:{
-            fetch:serverLink+"fetchall"
+            fetch:serverLink+"fetchall",
+            update:serverLink+"profile"
         }
     }
 };

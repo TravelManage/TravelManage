@@ -31,6 +31,10 @@ module.controller('PersonController', function($scope, $http) {
             });
     };
 
+    $scope.create=function(){
+        app.baseNav.pushPage("pages/personEditForm.html");
+    };
+
     $scope.showPerson = function(){
         app.baseNav.pushPage("pages/personDetails.html");
         menu.close();
@@ -54,7 +58,7 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
             $scope.details = data;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
     $scope.showTripDetails = function(){
@@ -75,6 +79,51 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
     });
 });
 
+module.controller('PersonEditFormController', function($scope, $http, AppService) {
+
+    $scope.data = {
+        "action": "add",
+        "object":"profile",
+        "type":"people",
+        "loginid": "1007",
+        "companyid": "1",
+        "firstname":"firstS",
+        "lastname":"lastS",
+        "email":"fff@123.com",
+        "landline":"55555",
+        "cell":"66666",
+        "address1":"fasdfasdf",
+        "address2":"",
+        "city":"sdfsdaf",
+        "state":"dsfasdf",
+        "pin":"",
+        "country":"",
+        "profileid":""
+    };
+
+
+    $scope.submit= function(){
+        var url = appObject.calls.person.update;
+
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+                //console.log(data);
+                if(data.status=="success")
+                {
+                    app.baseNav.popPage();
+                }
+
+            }).error(function(data, status, headers, config) {});
+    };
+    ons.ready(function(a) {
+    });
+
+});
+
 module.controller('EditPersonListController', function($scope, $http, AppService) {
     $scope.groupList = [];
 
@@ -84,7 +133,7 @@ module.controller('EditPersonListController', function($scope, $http, AppService
             $scope.personList = data.list;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
     $scope.confirm = function(){
@@ -107,7 +156,7 @@ module.controller('GroupsController', function($scope, $http) {
             $scope.groupList = data.list;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
     $scope.fetchPeople = function(){
@@ -115,7 +164,7 @@ module.controller('GroupsController', function($scope, $http) {
             $scope.peopleList = data.list;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
     $scope.showEditForm = function(){
@@ -145,7 +194,7 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
             $scope.data = data;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
     $scope.editPeopleList = function(){
@@ -180,7 +229,7 @@ module.controller('EditGroupListController', function($scope, $http, AppService)
             $scope.groupList = data.list;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
     $scope.confirm = function(){
@@ -202,7 +251,7 @@ module.controller('TripsController', function($scope, $http) {
             $scope.tripList = data;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
 
@@ -228,7 +277,7 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
         $http({method: 'GET', url: 'data/tripDetails.json'}).success(function(data, status, headers, config) {
             $scope.tripDetails = data;
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
 
@@ -267,7 +316,7 @@ module.controller('EditTripListController', function($scope, $http, AppService) 
             $scope.tripList = data;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
     $scope.confirm = function(){
@@ -289,7 +338,7 @@ module.controller('SchedulerController', function($scope, $http, AppService) {
             $scope.scheduleList = data;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
     $scope.showEditForm = function(){
@@ -315,7 +364,7 @@ module.controller('EditEmployeeListController', function($scope, $http, AppServi
             $scope.empList = data;
 
         }).error(function(data, status, headers, config) {
-        });
+            });
     };
 
     $scope.confirm = function(){
