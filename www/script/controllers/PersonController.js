@@ -1,7 +1,7 @@
 /**
  * Created by spike.karky on 7/7/2015.
  */
-module.controller('PersonController', function($scope, $http) {
+module.controller('PersonController', function($scope, $http, AppService) {
 
 
     $scope.data = {
@@ -35,7 +35,8 @@ module.controller('PersonController', function($scope, $http) {
     };
 
     $scope.create=function(){
-        app.baseNav.pushPage("pages/personEditForm.html");
+        AppService.openEditList("person", "personEditForm");
+        //app.baseNav.pushPage("pages/personEditForm.html");
     };
 
     $scope.showPerson = function(){
@@ -92,15 +93,15 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
         "companyid": "106",
         "firstname":"John",
         "lastname":"Smith",
-        "email":"fff",
-        "landline":"55555",
-        "cell":"66666",
-        "address1":"fasdfasdf",
+        "email":"abc@123.comm",
+        "landline":"1234567895",
+        "cell":"3259658562",
+        "address1":"123 Anywhere Dr",
         "address2":"",
-        "city":"sdfsdaf",
-        "state":"dsfasdf",
+        "city":"Houston",
+        "state":"Texas",
         "pin":"",
-        "country":"",
+        "country":"USA",
         "profileid":""
     };
 
@@ -114,15 +115,14 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
             'data': $scope.data,
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
-                //console.log(data);
-                console.log(data);
                 if(data.status=="success")
                 {
-                    //app.baseNav.popPage();
+                    AppService.closeEditList();
                 }
 
             }).error(function(data, status, headers, config) {});
     };
+
     ons.ready(function(a) {
     });
 
