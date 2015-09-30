@@ -1,4 +1,4 @@
-var serverLink="http://54.200.69.12:8080/JsonAPI/customer/travel/";
+var serverLink="http://localhost:8080/JsonAPI/customer/travel/";
 var appObject = {
     LOAD_STATIC:false,
     calls:{
