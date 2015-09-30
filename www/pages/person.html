@@ -12,14 +12,14 @@
 
 
     <ons-tabbar>
-        <ons-tab page="personList.html" active="true">
+        <ons-tab page="personList.html">
             Active
         </ons-tab>
         <ons-tab page="personList.html">
             <div class="notification reply-notification" ons-tab-inactive>4</div>
             Tracking
         </ons-tab>
-        <ons-tab page="personList.html">
+        <ons-tab page="personList.html" active="true">
             Archived
         </ons-tab>
     </ons-tabbar>
@@ -28,10 +28,10 @@
         <div class="page-content">
             <ons-scroller>
                 <ons-list>
-                    <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="person in personList" ng-click="showPerson()">
+                    <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="person in personData.listModel" ng-click="showPerson(person.id)">
                         <div class="list-item-content {{person.status}}">
                             <h2 class="name">
-                                {{person.name}}
+                                {{person.firstname}}
                             </h2>
                             <!--<p>email: {{person.email}}</p>
                             <p>phone: {{person.phone}}</p>

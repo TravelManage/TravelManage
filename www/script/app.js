@@ -6,7 +6,8 @@ var appObject = {
         createUser:serverLink+"usercreate",
         person:{
             fetch:serverLink+"fetchall",
-            update:serverLink+"profile"
+            update:serverLink+"profile",
+            fetchProfile: serverLink+"fetchAdetailprofile"
         }
     }
 };
@@ -17,9 +18,24 @@ var module = ons.bootstrap('my-app', ['onsen']);
 module.factory('AppService', function() {
     var callFromPage = "";
     var userData={};
+    var responseData = {};
+    var displayID = "";
     return{
         saveUser: function(data){
             userData=data;
+            responseData.companyid = data.companyid;
+        },
+
+        setId: function(id){
+            displayID=id;
+        },
+
+        getId: function(){
+            return displayID;
+        },
+
+        getResponseData: function(){
+            return responseData;
         },
         editGroupList: function(pageLink){
             callFromPage = pageLink;

@@ -24,7 +24,6 @@ module.controller('LoginController', function($scope, $http, AppService) {
             }
 
         }).error(function(data, status, headers, config) {});
-        //
 
     }
 

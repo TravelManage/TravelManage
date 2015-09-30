@@ -4,18 +4,20 @@
 module.controller('PersonController', function($scope, $http, AppService) {
 
 
-    $scope.data = {
+    $scope.data =  {
         "type": "people",
-        "companyid": "106",
-        "count": ""
+        "count": "",
+        "tab": "archieve"
     };
+    angular.extend($scope.data, AppService.getResponseData());
 
-    $scope.personList=[];
+    $scope.personData={};
 
 
     var url = appObject.calls.person.fetch;
     if(appObject.LOAD_STATIC){url ='data/personList.json'; }
     $scope.fetchData = function(){
+
         $http({
             'method': 'POST',
             'url': url,
@@ -23,11 +25,9 @@ module.controller('PersonController', function($scope, $http, AppService) {
             'dataType': 'json'
         })
             .success(function(data, status, headers, config) {
-                console.log(data);
                 if(data.status="success"){
-                    $scope.personList= data.listModel;
+                    $scope.personData= data;
                 }
-                //$scope.personList = data.list;
 
             })
             .error(function(data, status, headers, config) {
@@ -35,11 +35,13 @@ module.controller('PersonController', function($scope, $http, AppService) {
     };
 
     $scope.create=function(){
+        AppService.setId("");
         AppService.openEditList("person", "personEditForm");
         //app.baseNav.pushPage("pages/personEditForm.html");
     };
 
-    $scope.showPerson = function(){
+    $scope.showPerson = function(id){
+        AppService.setId(id);
         app.baseNav.pushPage("pages/personDetails.html");
         menu.close();
     };
@@ -54,15 +56,26 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
     $scope.details=[];
 
     $scope.showEditForm = function(){
-        app.baseNav.pushPage("pages/personEditForm.html");
+        AppService.setId($scope.details.profileid);
+        AppService.openEditList("personDetails", "personEditForm");
     };
 
     $scope.fetchData = function(){
-        $http({method: 'GET', url: 'data/personDetails.json'}).success(function(data, status, headers, config) {
+        $scope.data={profileid: AppService.getId()};
+        var url = appObject.calls.person.fetchProfile;
+        if(appObject.LOAD_STATIC){url ='data/personDetails.json';};
+
+        $http({
+            method: 'POST',
+            data: $scope.data,
+            url: url,
+            dataType: 'json'
+        }).success(function(data, status, headers, config) {
+            console.log(data);
             $scope.details = data;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
     $scope.showTripDetails = function(){
@@ -85,28 +98,34 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
 
 module.controller('PersonEditFormController', function($scope, $http, AppService) {
 
+    $scope.setAction ={
+        action:'add',
+        object:"profile",
+        "type":"people"
+    };
+
     $scope.data = {
-        "action": "add",
-        "object":"profile",
-        "type":"people",
-        "loginid": "1014",
-        "companyid": "106",
-        "firstname":"John",
-        "lastname":"Smith",
-        "email":"abc@123.comm",
-        "landline":"1234567895",
-        "cell":"3259658562",
-        "address1":"123 Anywhere Dr",
+        "firstname":"",
+        "lastname":"",
+        "email":"",
+        "landline":"",
+        "cell":"",
+        "address1":"",
         "address2":"",
-        "city":"Houston",
-        "state":"Texas",
+        "city":"",
+        "state":"",
         "pin":"",
-        "country":"USA",
+        "country":"",
         "profileid":""
     };
 
 
+
     $scope.submit= function(){
+
+        angular.extend($scope.data, AppService.getResponseData());
+        angular.extend($scope.data, $scope.setAction);
+
         var url = appObject.calls.person.update;
 
         $http({
@@ -115,15 +134,38 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
             'data': $scope.data,
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
-                if(data.status=="success")
-                {
-                    AppService.closeEditList();
-                }
+            if(data.status=="success")
+            {
+                AppService.closeEditList();
+            }
 
-            }).error(function(data, status, headers, config) {});
+        }).error(function(data, status, headers, config) {});
+    };
+
+    $scope.fetchData= function(){
+        if(AppService.getId()!="")
+        {
+            $scope.setAction.action='update';
+
+            var url = appObject.calls.person.fetchProfile;
+            if(appObject.LOAD_STATIC){url ='data/personDetails.json';};
+
+            $http({
+                method: 'POST',
+                data: {profileid: AppService.getId()},
+                url: url,
+                dataType: 'json'
+            }).success(function(data, status, headers, config) {
+                console.log(data);
+                $scope.data = data;
+
+            }).error(function(data, status, headers, config) {
+            });
+        }
     };
 
     ons.ready(function(a) {
+        $scope.fetchData();
     });
 
 });
@@ -137,7 +179,7 @@ module.controller('EditPersonListController', function($scope, $http, AppService
             $scope.personList = data.list;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
     $scope.confirm = function(){
@@ -160,7 +202,7 @@ module.controller('GroupsController', function($scope, $http) {
             $scope.groupList = data.list;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
     $scope.fetchPeople = function(){
@@ -168,7 +210,7 @@ module.controller('GroupsController', function($scope, $http) {
             $scope.peopleList = data.list;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
     $scope.showEditForm = function(){
@@ -198,7 +240,7 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
             $scope.data = data;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
     $scope.editPeopleList = function(){
@@ -233,7 +275,7 @@ module.controller('EditGroupListController', function($scope, $http, AppService)
             $scope.groupList = data.list;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
     $scope.confirm = function(){
@@ -255,7 +297,7 @@ module.controller('TripsController', function($scope, $http) {
             $scope.tripList = data;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
 
@@ -281,7 +323,7 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
         $http({method: 'GET', url: 'data/tripDetails.json'}).success(function(data, status, headers, config) {
             $scope.tripDetails = data;
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
 
@@ -320,7 +362,7 @@ module.controller('EditTripListController', function($scope, $http, AppService) 
             $scope.tripList = data;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
     $scope.confirm = function(){
@@ -342,7 +384,7 @@ module.controller('SchedulerController', function($scope, $http, AppService) {
             $scope.scheduleList = data;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
     $scope.showEditForm = function(){
@@ -368,7 +410,7 @@ module.controller('EditEmployeeListController', function($scope, $http, AppServi
             $scope.empList = data;
 
         }).error(function(data, status, headers, config) {
-            });
+        });
     };
 
     $scope.confirm = function(){
