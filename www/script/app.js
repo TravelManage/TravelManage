@@ -4,10 +4,14 @@ var appObject = {
     calls:{
         login:serverLink+"loginauth",
         createUser:serverLink+"usercreate",
+        fetchAll:serverLink+"fetchall",
         person:{
             fetch:serverLink+"fetchall",
             update:serverLink+"profile",
             fetchProfile: serverLink+"fetchAdetailprofile"
+        },
+        group:{
+            update:serverLink+"group"
         }
     }
 };
@@ -56,7 +60,8 @@ module.factory('AppService', function() {
             app.baseNav.pushPage("pages/"+goToPage+".html");
         },
         closeEditList: function(){
-            app.baseNav.resetToPage("pages/"+callFromPage+".html");
+            app.baseNav.popPage();
+            //app.baseNav.resetToPage("pages/"+callFromPage+".html");
         }
     }
 });
