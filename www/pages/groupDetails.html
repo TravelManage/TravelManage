@@ -38,8 +38,8 @@
     <div class="settings-header">People in this Group</div>
 
     <ons-list modifier="inset" class="settings-list">
-        <ons-list-item modifier="chevron" ng-repeat="person in data.people" ng-click="showPersonDetails()">
-            {{person.lastName}}, {{person.firstName}}
+        <ons-list-item modifier="chevron" ng-repeat="person in people" ng-click="showPersonDetails()" ng-class="{'no-display': !person.selected}">
+            {{person.lastname}}, {{person.firstname}}
         </ons-list-item>
         <ons-list-item class="end-item" modifier="chevron" ng-click="editPeopleList()">
             Manage People

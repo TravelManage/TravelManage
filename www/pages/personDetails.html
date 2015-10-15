@@ -44,8 +44,8 @@
     <div class="settings-header">Assigned to Group</div>
 
     <ons-list modifier="inset" class="settings-list">
-        <ons-list-item modifier="chevron" ng-repeat="group in details.groups" ng-click="showGroupDetails()">
-            {{group.name}}
+        <ons-list-item modifier="chevron" ng-repeat="group in groups" ng-click="showGroupDetails()" ng-class="{'no-display': !group.selected}">
+            {{group.groupname}}
             <span class="list-item-note">
                 <span class="notification">{{group.peopleCount}}</span>
             </span>

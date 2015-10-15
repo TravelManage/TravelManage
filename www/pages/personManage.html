@@ -12,7 +12,7 @@
 
         <ons-list-item modifier="tappable" ng-repeat="person in personList | filter:name">
             <label class="checkbox checkbox--list-item">
-                <input type="checkbox" ng-model="group.isSelected">
+                <input type="checkbox" ng-change="setAssign(person.id, person.selected)"  ng-model="person.selected">
                 <div class="checkbox__checkmark checkbox--list-item__checkmark"></div>
                 {{person.lastname}}, {{person.firstname}}
             </label>
