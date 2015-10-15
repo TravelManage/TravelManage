@@ -7,11 +7,11 @@
     <div class="formarea">
 
         <div class="form-row">
-            <input type="text" class="text-input--underbar width-full" placeholder="Name" value="{{data.groupname}}">
+            <input type="text" class="text-input--underbar width-full" placeholder="Name"  ng-model="data.groupname">
         </div>
 
         <div class="form-row">
-            <textarea class="textarea textarea--transparent width-full" placeholder="Notes" style="min-height: 200px;">{{data.notes}}</textarea>
+            <textarea class="textarea textarea--transparent width-full" placeholder="Notes" ng-model="data.notes" style="min-height: 200px;"></textarea>
         </div>
 
         <div class="vspc form-row">

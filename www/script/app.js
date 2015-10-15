@@ -11,7 +11,9 @@ var appObject = {
             fetchProfile: serverLink+"fetchAdetailprofile"
         },
         group:{
-            update:serverLink+"group"
+            update:serverLink+"group",
+            fetch:serverLink+"fetchAdetailgroup"
+
         }
     }
 };
@@ -24,10 +26,12 @@ module.factory('AppService', function() {
     var userData={};
     var responseData = {};
     var displayID = "";
+    var dataBlock = {};
     return{
         saveUser: function(data){
             userData=data;
             responseData.companyid = data.companyid;
+            responseData.session_id=data.session_id;
         },
 
         setId: function(id){
@@ -40,6 +44,17 @@ module.factory('AppService', function() {
 
         getResponseData: function(){
             return responseData;
+        },
+
+        setDetailData: function(data){
+            dataBlock = data;
+        },
+        getDetailData: function(){
+            return dataBlock;
+        },
+
+        cleanDetailData: function(){
+            dataBlock={};
         },
         editGroupList: function(pageLink){
             callFromPage = pageLink;

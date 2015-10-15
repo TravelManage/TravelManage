@@ -7,10 +7,10 @@ module.controller('PersonController', function($scope, $http, AppService) {
     $scope.data =  {
         "type": "people",
         "count": "",
-        "tab": "archieve"
+        "tab": "all"
     };
-    angular.extend($scope.data, AppService.getResponseData());
 
+    angular.extend($scope.data, AppService.getResponseData());
     $scope.personData={};
 
 
@@ -26,6 +26,7 @@ module.controller('PersonController', function($scope, $http, AppService) {
         })
             .success(function(data, status, headers, config) {
                 if(data.status="success"){
+                    console.log(data);
                     $scope.personData= data;
                 }
 
@@ -65,6 +66,7 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
 
     $scope.fetchData = function(){
         $scope.data={profileid: AppService.getId()};
+        angular.extend($scope.data, AppService.getResponseData());
         var url = appObject.calls.person.fetchProfile;
         if(appObject.LOAD_STATIC){url ='data/personDetails.json';};
 
@@ -74,7 +76,6 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
             url: url,
             dataType: 'json'
         }).success(function(data, status, headers, config) {
-            console.log(data);
             $scope.details = data;
 
         }).error(function(data, status, headers, config) {
@@ -176,13 +177,41 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
 module.controller('EditPersonListController', function($scope, $http, AppService) {
     $scope.groupList = [];
 
+    $scope.data =  {
+        "type": "people",
+        "count": "",
+        "tab": "all"
+    };
+
+    angular.extend($scope.data, AppService.getResponseData());
+    $scope.personData={};
+
+
+    var url = appObject.calls.person.fetch;
+    if(appObject.LOAD_STATIC){url ='data/personList.json'; }
+
 
     $scope.fetchData= function(){
-        $http({method: 'GET', url: 'data/personList.json'}).success(function(data, status, headers, config) {
-            $scope.personList = data.list;
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            console.log(data);
+            $scope.personList = data.listModel;
 
         }).error(function(data, status, headers, config) {
         });
+    };
+
+    $scope.assign = function(){
+        var data={
+            "action": "assign",
+            "object": "profile",
+            "profileid": "21",
+            "groupid": "6"
+        }
     };
 
     $scope.confirm = function(){
@@ -202,7 +231,7 @@ module.controller('GroupsController', function($scope, $http, AppService) {
     $scope.data =  {
         "type": "group",
         "count": "",
-        "tab": "archieve"
+        "tab": "all"
     };
     angular.extend($scope.data, AppService.getResponseData());
 
@@ -211,7 +240,6 @@ module.controller('GroupsController', function($scope, $http, AppService) {
         var url = appObject.calls.person.fetch;
         if(appObject.LOAD_STATIC){url ='data/groups.json'; }
 
-        console.log($scope.data);
         $http({
             method: 'POST',
             url: url,
@@ -219,8 +247,7 @@ module.controller('GroupsController', function($scope, $http, AppService) {
             'dataType': 'json'
         })
             .success(function(data, status, headers, config) {
-                console.log(data);
-                $scope.groupList = data.list;
+                $scope.groupList = data.listModel;
 
             }).error(function(data, status, headers, config) {
             });
@@ -238,7 +265,8 @@ module.controller('GroupsController', function($scope, $http, AppService) {
         app.baseNav.pushPage("pages/groupEditForm.html");
     };
 
-    $scope.showDetails = function(){
+    $scope.showDetails = function(id){
+        AppService.setId(id);
         app.baseNav.pushPage("pages/groupDetails.html");
         menu.close();
     };
@@ -250,14 +278,32 @@ module.controller('GroupsController', function($scope, $http, AppService) {
 });
 
 module.controller('GroupDetailController', function($scope, $http, AppService) {
+    $scope.data =   {
+        "groupid": "3",
+        "companyid":""
+    };
     $scope.peopleList = [];
 
     $scope.showEditForm = function(){
+        AppService.setDetailData($scope.data);
         app.baseNav.pushPage("pages/groupEditForm.html");
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
     };
 
-    $scope.fetchPeople = function(){
-        $http({method: 'GET', url: 'data/groupDetails.json'}).success(function(data, status, headers, config) {
+    $scope.fetchData = function(){
+        $scope.data.groupid = AppService.getId();
+        angular.extend($scope.data, AppService.getResponseData());
+        var url = appObject.calls.group.fetch;
+        if(appObject.LOAD_STATIC){url ='data/groupDetails.json'; }
+
+        $http({
+            method: 'POST',
+            url: url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
             $scope.data = data;
 
         }).error(function(data, status, headers, config) {
@@ -282,7 +328,7 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
     };
 
     ons.ready(function(a) {
-        $scope.fetchPeople();
+        $scope.fetchData();
     });
 
 });
@@ -294,8 +340,8 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
     };
 
     $scope.data =  {
-        "notes": "Test Note",
-        "groupname": "MayTestGroup2",
+        "notes": "Team 02",
+        "groupname": "Team 02",
         "groupid": ""
     };
 
@@ -303,7 +349,7 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
 
     $scope.submit= function(){
 
-        //angular.extend($scope.data, AppService.getResponseData());
+        angular.extend($scope.data, AppService.getResponseData());
         angular.extend($scope.data, $scope.setAction);
 
         var url = appObject.calls.group.update;
@@ -323,6 +369,15 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
     };
 
     $scope.fetchData= function(){
+
+
+        if(AppService.getDetailData().groupid)
+        {
+            $scope.data = AppService.getDetailData();
+            $scope.setAction.action='update';
+
+        }
+        return;
         if(AppService.getId()!="")
         {
             $scope.setAction.action='update';

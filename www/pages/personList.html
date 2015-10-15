@@ -12,13 +12,8 @@
         <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="person in personList" ng-click="showPerson()">
             <div class="list-item-content {{person.status}}">
                 <h2 class="name">
-                    {{person.name}}
+                    {{person.firstname}}, {{person.lastname}}
                 </h2>
-
-                <!--<p>email: {{person.email}}</p>
-                <p>phone: {{person.phone}}</p>
-                <p>location: {{person.location}}</p>-->
-
             </div>
         </ons-list-item>
     </ons-list>

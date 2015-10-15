@@ -26,10 +26,10 @@
         <div class="page-content">
             <ons-scroller>
                 <ons-list>
-                    <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="group in groupList" ng-click="showDetails()">
+                    <ons-list-item modifier="chevron" class="list-item-container" ng-repeat="group in groupList" ng-click="showDetails(group.id)">
                         <div class="list-item-content {{group.status}}">
                             <h2 class="name">
-                                {{group.name}}
+                                {{group.groupname}}
                             </h2>
                             <p>People in group: {{group.peopleCount}}</p>
                         </div>
