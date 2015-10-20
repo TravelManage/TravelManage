@@ -69,7 +69,7 @@ module.factory('AppService', function() {
             app.baseNav.pushPage("pages/employeeManage.html");
         },
         closeEmpList: function(){
-            app.baseNav.resetToPage(callFromPage);
+            app.baseNav.popPage();
         },
         openEditList: function(parentPage, goToPage){
             callFromPage = parentPage;

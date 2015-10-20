@@ -14,8 +14,8 @@
 
     <ons-row class="profile-wrapper">
         <ons-col>
-            <div class="profile-name">{{data.groupname}}</div>
-            <div class="profile-email">People in group: {{data.peopleCount}}</div>
+            <div class="profile-name">{{details.groupname}}</div>
+            <div class="profile-email">People in group: {{details.peopleCount}}</div>
         </ons-col>
     </ons-row>
 
@@ -38,7 +38,7 @@
     <div class="settings-header">People in this Group</div>
 
     <ons-list modifier="inset" class="settings-list">
-        <ons-list-item modifier="chevron" ng-repeat="person in people" ng-click="showPersonDetails()" ng-class="{'no-display': !person.selected}">
+        <ons-list-item modifier="chevron" ng-repeat="person in people" ng-click="showPersonDetails(person.id)" ng-class="{'no-display': !person.selected}">
             {{person.lastname}}, {{person.firstname}}
         </ons-list-item>
         <ons-list-item class="end-item" modifier="chevron" ng-click="editPeopleList()">

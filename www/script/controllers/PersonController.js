@@ -326,10 +326,14 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
         "groupid": "3",
         "companyid":""
     };
+    $scope.data.groupid = AppService.getId();
+    angular.extend($scope.data, AppService.getResponseData());
+
+    $scope.details ={};
     $scope.people = [];
 
     $scope.showEditForm = function(){
-        AppService.setDetailData($scope.data);
+        AppService.setDetailData($scope.details);
         app.baseNav.pushPage("pages/groupEditForm.html");
         app.baseNav.once("postpop", function(){
             $scope.fetchData();
@@ -337,8 +341,6 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
     };
 
     $scope.fetchData = function(){
-        $scope.data.groupid = AppService.getId();
-        angular.extend($scope.data, AppService.getResponseData());
         var url = appObject.calls.group.fetch;
         if(appObject.LOAD_STATIC){url ='data/groupDetails.json'; }
 
@@ -348,7 +350,7 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
             'data': $scope.data,
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
-            $scope.data = data;
+            $scope.details = data;
             $scope.fetchPeople(data.groupid);
 
         }).error(function(data, status, headers, config) {
@@ -359,7 +361,7 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
         var data = {
             "type": "people",
             "count": "",
-            "tab": "all",
+            "tab": "selected",
             "groupid":id
         };
         angular.extend(data, AppService.getResponseData());
@@ -372,8 +374,6 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
         }).success(function(data, status, headers, config) {
             if(data.status="success"){
                 $scope.people = data.listModel;
-
-                console.log(data.listModel);
             }
 
         }).error(function(data, status, headers, config) {
@@ -383,10 +383,14 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
     $scope.editPeopleList = function(){
         AppService.setDetailData({groupid:$scope.data.groupid});
         AppService.openEditList("groupDetails", "personManage");
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
     };
 
 
-    $scope.showPersonDetails = function(){
+    $scope.showPersonDetails = function(id){
+        AppService.setId(id);
         app.baseNav.pushPage("pages/personDetails.html");
     };
 
@@ -445,6 +449,7 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
         if(AppService.getDetailData().groupid)
         {
             $scope.data = AppService.getDetailData();
+            console.log($scope.data);
             $scope.setAction.action='update';
 
         }
