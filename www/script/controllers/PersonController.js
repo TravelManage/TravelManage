@@ -26,7 +26,6 @@ module.controller('PersonController', function($scope, $http, AppService) {
         })
             .success(function(data, status, headers, config) {
                 if(data.status="success"){
-                    console.log(data);
                     $scope.personData= data;
                 }
 
@@ -80,7 +79,6 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
         }).success(function(data, status, headers, config) {
             $scope.details = data;
             $scope.fetchGroup(data.profileid);
-            console.log(data);
 
         }).error(function(data, status, headers, config) {
         });
@@ -104,7 +102,6 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
             if(data.status="success"){
                 //$scope.people = data.listModel;
                 $scope.groups = data.listModel;
-                console.log(data);
             }
 
         }).error(function(data, status, headers, config) {
@@ -121,7 +118,12 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
     };
 
     $scope.editGroupList = function(){
+        AppService.setDetailData({profileid:$scope.data.profileid});
         AppService.openEditList("personDetails", "groupManage");
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
+
     };
 
     ons.ready(function() {
@@ -269,7 +271,6 @@ module.controller('EditPersonListController', function($scope, $http, AppService
 
 module.controller('GroupsController', function($scope, $http, AppService) {
     $scope.groupList=[];
-    $scope.peopleList = [];
 
     $scope.data =  {
         "type": "group",
@@ -296,14 +297,6 @@ module.controller('GroupsController', function($scope, $http, AppService) {
             });
     };
 
-    $scope.fetchPeople = function(){
-
-        $http({method: 'GET', url: 'data/personList.json'}).success(function(data, status, headers, config) {
-            $scope.peopleList = data.list;
-
-        }).error(function(data, status, headers, config) {
-        });
-    };
 
     $scope.showEditForm = function(){
         app.baseNav.pushPage("pages/groupEditForm.html");
@@ -331,6 +324,7 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
 
     $scope.details ={};
     $scope.people = [];
+    $scope.trips = [];
 
     $scope.showEditForm = function(){
         AppService.setDetailData($scope.details);
@@ -352,6 +346,7 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
         }).success(function(data, status, headers, config) {
             $scope.details = data;
             $scope.fetchPeople(data.groupid);
+            $scope.fetchTrips(data.groupid);
 
         }).error(function(data, status, headers, config) {
         });
@@ -374,6 +369,30 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
         }).success(function(data, status, headers, config) {
             if(data.status="success"){
                 $scope.people = data.listModel;
+            }
+
+        }).error(function(data, status, headers, config) {
+        });
+    };
+
+    $scope.fetchTrips = function(id){
+        var data = {
+            "type": "trip",
+            "count": "",
+            "tab": "selected",
+            "groupid":id
+        };
+        angular.extend(data, AppService.getResponseData());
+
+        $http({
+            'method': 'POST',
+            'url': appObject.calls.person.fetch,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            if(data.status="success"){
+                $scope.trips = data.listModel;
+                console.log(data);
             }
 
         }).error(function(data, status, headers, config) {
@@ -449,7 +468,7 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
         if(AppService.getDetailData().groupid)
         {
             $scope.data = AppService.getDetailData();
-            console.log($scope.data);
+
             $scope.setAction.action='update';
 
         }
@@ -467,7 +486,6 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
                 url: url,
                 dataType: 'json'
             }).success(function(data, status, headers, config) {
-                console.log(data);
                 $scope.data = data;
 
             }).error(function(data, status, headers, config) {
@@ -483,14 +501,63 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
 
 module.controller('EditGroupListController', function($scope, $http, AppService) {
     $scope.groupList = [];
+    $scope.data =  {
+        "type": "group",
+        "count": "",
+        "tab": "all"
+    };
+    angular.extend($scope.data, AppService.getResponseData(), AppService.getDetailData());
 
+    console.log($scope.data);
 
     $scope.fetchData= function(){
-        $http({method: 'GET', url: 'data/groups.json'}).success(function(data, status, headers, config) {
-            $scope.groupList = data.list;
+        var url = appObject.calls.fetchAll;
+        if(appObject.LOAD_STATIC){url ='data/groups.json'; }
+
+
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+
+            $scope.groupList = data.listModel;
 
         }).error(function(data, status, headers, config) {
         });
+    };
+
+    $scope.setAssign = function(id, selected){
+
+        var data={
+            "action": "assign",
+            "object": "group",
+            "groupid": id
+        };
+
+        var parentData = AppService.getDetailData();
+
+        if(parentData.profileid){
+            data.object = "profile";
+        }
+
+
+        angular.extend(data, AppService.getResponseData(), parentData);
+
+        if(!selected){data.action = "unassign"}
+
+        $http({
+            'method': 'POST',
+            'url': appObject.calls.assign,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+
+        }).error(function(data, status, headers, config) {
+        });
+
+
     };
 
     $scope.confirm = function(){
@@ -503,13 +570,28 @@ module.controller('EditGroupListController', function($scope, $http, AppService)
 
 });
 
-module.controller('TripsController', function($scope, $http) {
+module.controller('TripsController', function($scope, $http, AppService) {
     $scope.tripList=[];
+
+    $scope.data =  {
+        "type": "trip",
+        "tab": "all"
+    };
+    angular.extend($scope.data, AppService.getResponseData());
 
 
     $scope.fetchData = function(){
-        $http({method: 'GET', url: 'data/tripList.json'}).success(function(data, status, headers, config) {
-            $scope.tripList = data;
+
+        var url = appObject.calls.fetchAll;
+        if(appObject.LOAD_STATIC){url ='data/tripList.json'; }
+        $http({
+            method: 'POST',
+            url: url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            $scope.tripList = data.listModel;
+            console.log(data);
 
         }).error(function(data, status, headers, config) {
         });
@@ -560,6 +642,60 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
 
     $scope.editSchedule= function(){
         AppService.openEditList("tripDetails", "tripScheduler");
+    };
+
+    ons.ready(function(a) {
+        $scope.fetchData();
+    });
+
+});
+
+module.controller('TripEditFormController', function($scope, $http, AppService) {
+
+    $scope.setAction ={
+        action:'add'
+    };
+
+    $scope.data =
+    {
+        "notes": "TRIP Notes",
+        "tripname": "Trip number 6",
+        "tripid": ""
+    };
+
+
+
+    $scope.submit= function(){
+
+        angular.extend($scope.data, AppService.getResponseData());
+        angular.extend($scope.data, $scope.setAction);
+
+        var url = appObject.calls.trip.update;
+
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+
+            if(data.status=="success")
+            {
+                AppService.closeEditList();
+            }
+
+        }).error(function(data, status, headers, config) {});
+    };
+
+    $scope.fetchData= function(){
+
+
+        if(AppService.getDetailData().tripid)
+        {
+            $scope.data = AppService.getDetailData();
+            $scope.setAction.action='update';
+
+        }
     };
 
     ons.ready(function(a) {

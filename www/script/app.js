@@ -15,6 +15,9 @@ var appObject = {
             update:serverLink+"group",
             fetch:serverLink+"fetchAdetailgroup"
 
+        },
+        trip:{
+            update:serverLink+"trip"
         }
     }
 };

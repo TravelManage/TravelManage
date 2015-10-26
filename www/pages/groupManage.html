@@ -21,9 +21,9 @@
 
             <ons-list-item modifier="tappable" ng-repeat="group in groupList | filter:name">
                 <label class="checkbox checkbox--list-item">
-                    <input type="checkbox" ng-model="group.isSelected">
+                    <input type="checkbox" ng-model="group.selected" ng-change="setAssign(group.id, group.selected)" >
                     <div class="checkbox__checkmark checkbox--list-item__checkmark"></div>
-                    {{group.name}}
+                    {{group.groupname}}
                 </label>
             </ons-list-item>
 
