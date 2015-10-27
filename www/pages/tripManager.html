@@ -20,9 +20,9 @@
         <ons-list>
             <ons-list-item modifier="tappable" ng-repeat="trip in tripList | filter:name">
                 <label class="checkbox checkbox--list-item">
-                    <input type="checkbox" ng-model="trip.isActive">
+                    <input type="checkbox" ng-model="trip.selected" ng-change="setAssign(trip.id, trip.selected)" >
                     <div class="checkbox__checkmark checkbox--list-item__checkmark"></div>
-                    {{trip.name}}
+                    {{trip.tripname}}
                 </label>
             </ons-list-item>
 

@@ -361,12 +361,14 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
         };
         angular.extend(data, AppService.getResponseData());
 
+
         $http({
             'method': 'POST',
-            'url': appObject.calls.person.fetch,
+            'url': appObject.calls.fetchAll,
             'data': data,
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
+            console.log(data);
             if(data.status="success"){
                 $scope.people = data.listModel;
             }
@@ -386,13 +388,12 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
 
         $http({
             'method': 'POST',
-            'url': appObject.calls.person.fetch,
+            'url': appObject.calls.fetchAll,
             'data': data,
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
             if(data.status="success"){
                 $scope.trips = data.listModel;
-                console.log(data);
             }
 
         }).error(function(data, status, headers, config) {
@@ -418,7 +419,12 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
     };
 
     $scope.editTripList = function(){
+        AppService.setDetailData({groupid:$scope.data.groupid});
         AppService.openEditList("groupDetails", "tripManager");
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
+
     };
 
     ons.ready(function(a) {
@@ -507,8 +513,6 @@ module.controller('EditGroupListController', function($scope, $http, AppService)
         "tab": "all"
     };
     angular.extend($scope.data, AppService.getResponseData(), AppService.getDetailData());
-
-    console.log($scope.data);
 
     $scope.fetchData= function(){
         var url = appObject.calls.fetchAll;
@@ -707,13 +711,60 @@ module.controller('TripEditFormController', function($scope, $http, AppService) 
 module.controller('EditTripListController', function($scope, $http, AppService) {
     $scope.tripList = [];
 
+    $scope.groupList = [];
+    $scope.data =  {
+        "type": "trip",
+        "count": "",
+        "tab": "all"
+    };
+
+    angular.extend($scope.data, AppService.getResponseData(), AppService.getDetailData());
+
 
     $scope.fetchData= function(){
-        $http({method: 'GET', url: 'data/tripList.json'}).success(function(data, status, headers, config) {
-            $scope.tripList = data;
+
+        var url = appObject.calls.fetchAll;
+        if(appObject.LOAD_STATIC){url ='data/tripList.json'; }
+
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            $scope.tripList = data.listModel;
 
         }).error(function(data, status, headers, config) {
         });
+    };
+
+    $scope.setAssign = function(id, selected){
+
+        var data={
+            "action": "assign",
+            "object": "group",
+            "tripid": id
+        };
+
+        var parentData = AppService.getDetailData();
+
+
+        angular.extend(data, AppService.getResponseData(), parentData);
+
+        if(!selected){data.action = "unassign"}
+
+        console.log(data);
+        $http({
+            'method': 'POST',
+            'url': appObject.calls.assign,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+
+        }).error(function(data, status, headers, config) {
+        });
+
+
     };
 
     $scope.confirm = function(){
