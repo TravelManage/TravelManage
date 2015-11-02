@@ -26,7 +26,7 @@
         <div class="page-content">
             <ons-scroller>
                 <ons-list class="plan-list">
-                    <ons-list-item modifier="chevron" class="plan" ng-repeat="trip in tripList" ng-click="showDetails()">
+                    <ons-list-item modifier="chevron" class="plan" ng-repeat="trip in tripList" ng-click="showDetails(trip.id)">
                         <ons-row>
                             <ons-col width="80px" class="plan-left">
                                 <div class="plan-date">{{trip.startDate}}</div>

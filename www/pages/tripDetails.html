@@ -14,7 +14,7 @@
 
     <ons-row class="profile-wrapper">
         <ons-col>
-            <div class="profile-name">{{tripDetails.name}}</div>
+            <div class="profile-name">{{tripDetails.tripname}}</div>
             <div class="profile-email"><ons-icon icon="fa-map-marker"></ons-icon> {{tripDetails.from}} - {{tripDetails.to}}</div>
             <div class="profile-email"><ons-icon icon="fa-calendar-o"></ons-icon> {{tripDetails.startDate}} - {{tripDetails.endDate}}</div>
         </ons-col>
@@ -25,7 +25,7 @@
 
             <div class="button-bar">
                 <div class="button-bar__item">
-                    <button class="button-bar__button" ng-click="showEditForm()">Edit</button>
+                    <button class="button-bar__button" ng-click="showEditForm(tripDetails.tripid)">Edit</button>
                 </div>
 
                 <div class="button-bar__item">
@@ -40,8 +40,8 @@
     <div class="settings-header">Groups in this trip</div>
 
     <ons-list modifier="inset" class="settings-list">
-        <ons-list-item modifier="chevron" ng-repeat="group in tripDetails.groups" ng-click="showGroupDetails()">
-            {{group.name}}
+        <ons-list-item modifier="chevron" ng-repeat="group in groups" ng-click="showGroupDetails()">
+            {{group.groupname}}
         </ons-list-item>
         <ons-list-item class="end-item" modifier="chevron" ng-click="editGroupList()">
             Manage Group

@@ -518,7 +518,6 @@ module.controller('EditGroupListController', function($scope, $http, AppService)
         var url = appObject.calls.fetchAll;
         if(appObject.LOAD_STATIC){url ='data/groups.json'; }
 
-
         $http({
             'method': 'POST',
             'url': url,
@@ -606,7 +605,8 @@ module.controller('TripsController', function($scope, $http, AppService) {
         app.baseNav.pushPage("pages/tripEditForm.html");
     };
 
-    $scope.showDetails = function(){
+    $scope.showDetails = function(id){
+        AppService.setId(id);
         app.baseNav.pushPage("pages/tripDetails.html");
         menu.close();
     };
@@ -619,25 +619,72 @@ module.controller('TripsController', function($scope, $http, AppService) {
 
 module.controller('TripDetailController', function($scope, $http, AppService) {
     $scope.tripDetails={};
+    $scope.groups=[];
+
+    $scope.data = {
+        "tripid": "0"
+    };
+    $scope.data.tripid = AppService.getId();
+    angular.extend($scope.data, AppService.getResponseData());
 
     $scope.fetchData = function(){
-        $http({method: 'GET', url: 'data/tripDetails.json'}).success(function(data, status, headers, config) {
+        var url = appObject.calls.trip.fetch;
+        if(appObject.LOAD_STATIC){url ='data/tripDetails.json'; }
+
+        $http({
+            method: 'POST',
+            url: url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
             $scope.tripDetails = data;
+            $scope.fetchGroup(data.tripid);
+
+
         }).error(function(data, status, headers, config) {
         });
     };
 
-
     $scope.showEditForm = function(){
-        app.baseNav.pushPage("pages/tripEditForm.html");
+        //AppService.setId($scope.tripDetails.tripid);
+        AppService.setDetailData($scope.tripDetails);
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
+        app.baseNav.pushPage('pages/tripEditForm.html');
     };
 
     $scope.showGroupDetails = function(){
         app.baseNav.pushPage("pages/groupDetails.html");
     };
 
+    $scope.fetchGroup = function(id){
+        var data = {
+            "type": "group",
+            "count": "",
+            "tab": "selected",
+            "tripid":id
+        };
+        angular.extend(data, AppService.getResponseData());
+
+        $http({
+            'method': 'POST',
+            'url': appObject.calls.fetchAll,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            $scope.groups = data.listModel;
+
+        }).error(function(data, status, headers, config) {
+        });
+    };
+
     $scope.editGroupList = function(){
+        AppService.setDetailData({tripid:$scope.data.tripid});
         AppService.openEditList("tripDetails", "groupManage");
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
     };
 
     $scope.editEmpList = function(){

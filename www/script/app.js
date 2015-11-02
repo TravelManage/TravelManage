@@ -17,7 +17,8 @@ var appObject = {
 
         },
         trip:{
-            update:serverLink+"trip"
+            update:serverLink+"trip",
+            fetch: serverLink+ "fetchAdetailtrip"
         }
     }
 };
