@@ -55,6 +55,7 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
 
     $scope.details=[];
     $scope.groups = [];
+    $scope.trips = [];
 
     $scope.showEditForm = function(){
         AppService.setId($scope.details.profileid);
@@ -78,13 +79,14 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
             dataType: 'json'
         }).success(function(data, status, headers, config) {
             $scope.details = data;
-            $scope.fetchGroup(data.profileid);
+            $scope.fetchGroups(data.profileid);
+            $scope.fetchTrips(data.profileid);
 
         }).error(function(data, status, headers, config) {
         });
     };
 
-    $scope.fetchGroup = function(id){
+    $scope.fetchGroups = function(id){
         var data = {
             "type": "group",
             "count": "",
@@ -102,6 +104,30 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
             if(data.status="success"){
                 //$scope.people = data.listModel;
                 $scope.groups = data.listModel;
+            }
+
+        }).error(function(data, status, headers, config) {
+        });
+    };
+
+    $scope.fetchTrips = function(id){
+        var data = {
+            "type": "trip",
+            "count": "",
+            "tab": "selected",
+            "profileid":id
+        };
+        angular.extend(data, AppService.getResponseData());
+
+        $http({
+            'method': 'POST',
+            'url': appObject.calls.person.fetch,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            if(data.status="success"){
+                //$scope.people = data.listModel;
+                $scope.trips = data.listModel;
             }
 
         }).error(function(data, status, headers, config) {

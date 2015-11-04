@@ -60,8 +60,8 @@
     <div class="settings-header">Assigned to Trips</div>
 
     <ons-list modifier="inset" class="settings-list">
-        <ons-list-item modifier="chevron" ng-repeat="trip in details.trips" ng-click="showTripDetails()">
-            {{trip.name}}
+        <ons-list-item modifier="chevron" ng-repeat="trip in trips" ng-click="showTripDetails()">
+            {{trip.tripname}}
             <span class="list-item-note">
                 <span class="notification">{{trip.groupCount}}</span>
             </span>
