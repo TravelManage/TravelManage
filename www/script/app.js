@@ -19,6 +19,10 @@ var appObject = {
         trip:{
             update:serverLink+"trip",
             fetch: serverLink+ "fetchAdetailtrip"
+        },
+
+        schedule:{
+            update:serverLink+"schedule"
         }
     }
 };

@@ -1,9 +1,9 @@
-<ons-page>
+<ons-page ng-controller="EditScheduleController">
     <ons-toolbar>
 
         <div class="center">Update Schedule</div>
         <div class="right">
-            <ons-toolbar-button ng-click="confirm()">
+            <ons-toolbar-button ng-click="submit()">
                 Done
             </ons-toolbar-button>
         </div>
@@ -11,18 +11,18 @@
 
     <div class="formarea">
         <div class="form-row">
-            <input type="text" class="text-input--underbar width-full" placeholder="Location" value="">
+            <input type="text" class="text-input--underbar width-full" placeholder="Description" value="" ng-model="data.schedulename">
         </div>
         <div class="form-row">
-            <input type="text" class="text-input--underbar width-full" placeholder="Date" value="">
-        </div>
-
-        <div class="form-row">
-            <input type="text" class="text-input--underbar width-full" placeholder="Time" value="">
+            <input type="text" class="text-input--underbar width-full" placeholder="Date" value="" ng-model="data.startdate">
         </div>
 
+        <!--<div class="form-row">
+            <input type="text" class="text-input--underbar width-full" placeholder="Time" value="" ng-model="data.starttime">
+        </div>-->
+
         <div class="form-row">
-            <textarea class="textarea textarea--transparent width-full" placeholder="Notes" style="min-height: 200px;"></textarea>
+            <textarea class="textarea textarea--transparent width-full" placeholder="Notes" style="min-height: 200px;" ng-model="data.notes"></textarea>
         </div>
 
     </div>

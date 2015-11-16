@@ -646,6 +646,7 @@ module.controller('TripsController', function($scope, $http, AppService) {
 module.controller('TripDetailController', function($scope, $http, AppService) {
     $scope.tripDetails={};
     $scope.groups=[];
+    $scope.schedules=[];
 
     $scope.data = {
         "tripid": "0"
@@ -665,6 +666,7 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
         }).success(function(data, status, headers, config) {
             $scope.tripDetails = data;
             $scope.fetchGroup(data.tripid);
+            $scope.fetchSchedule(data.tripid);
 
 
         }).error(function(data, status, headers, config) {
@@ -717,7 +719,29 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
         AppService.openEditList("tripDetails", "employeeManager");
     };
 
-    $scope.editSchedule= function(){
+    $scope.fetchSchedule = function(id){
+        var data = {
+            "type": "schedule",
+            "count": "",
+            "tab": "trip",
+            "tripid":id
+        };
+        angular.extend(data, AppService.getResponseData());
+
+        $http({
+            'method': 'POST',
+            'url': appObject.calls.fetchAll,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            $scope.schedules = data.listModel;
+
+        }).error(function(data, status, headers, config) {});
+    };
+
+    $scope.editScheduleList= function(){
+        AppService.setId($scope.tripDetails.tripid);
+        //AppService.setDetailData($scope.schedules);
         AppService.openEditList("tripDetails", "tripScheduler");
     };
 
@@ -851,19 +875,49 @@ module.controller('EditTripListController', function($scope, $http, AppService) 
 });
 
 module.controller('SchedulerController', function($scope, $http, AppService) {
-    $scope.groupList = [];
+    $scope.scheduleList = [];
+    $scope.tripId = "0";
 
 
     $scope.fetchData= function(){
-        $http({method: 'GET', url: 'data/scheduler.json'}).success(function(data, status, headers, config) {
-            $scope.scheduleList = data;
+        var data = {
+            "type": "schedule",
+            "count": "",
+            "tab": "trip",
+            "tripid":$scope.tripId
+        };
+        angular.extend(data, AppService.getResponseData());
 
-        }).error(function(data, status, headers, config) {
-        });
+        $http({
+            'method': 'POST',
+            'url': appObject.calls.fetchAll,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            $scope.scheduleList = data.listModel;
+
+        }).error(function(data, status, headers, config) {});
+        //$scope.scheduleList = AppService.getDetailData();
     };
 
-    $scope.showEditForm = function(){
-        app.baseNav.pushPage("pages/tripScheduleEdit.html");
+    $scope.showEditForm = function(data){
+        if(data)
+        {
+            var scheduleId = data.id;
+            data.scheduleid = scheduleId;
+            delete data.$$hashKey;
+            delete data.selected;
+            delete data.session_id;
+            delete data.tab;
+            delete data.id;
+        }
+
+        AppService.setDetailData(data);
+        AppService.setId($scope.tripId);
+        AppService.openEditList("tripScheduler", "tripScheduleEdit");
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
     };
 
     $scope.confirm = function(){
@@ -871,6 +925,75 @@ module.controller('SchedulerController', function($scope, $http, AppService) {
     };
 
     ons.ready(function(a) {
+        $scope.tripId = AppService.getId();
+        $scope.fetchData();
+    });
+
+});
+
+module.controller('EditScheduleController', function($scope, $http, AppService) {
+
+    $scope.setAction = {action:"add"};
+    /*$scope.data =   {
+     "notes": "",
+     "schedulename": "",
+     "scheduleid": "",
+     "startdate": "2011-5-30",
+     "enddate": "2011/5/30",
+     "starttime": "16:13:47",
+     "endtime": "16:13:47"
+     };*/
+
+    $scope.data ={
+        "notes": "schdeule",
+        "schedulename": "schedule number 5fff",
+        "action": "add",
+        "scheduleid": "",
+        "startdate": "2011-5-30",
+        "enddate": "2011-5-30",
+        //"starttime": "16:13:47",
+        //"endtime": "16:13:47",
+        "tripid":"1"
+
+    };
+
+    $scope.fetchData= function(){
+        if(AppService.getDetailData())
+        {
+            $scope.setAction.action = 'update';
+            $scope.data = AppService.getDetailData();
+        }
+    };
+
+    /*$scope.showEditForm = function(){
+     app.baseNav.pushPage("pages/tripScheduleEdit.html");
+     };*/
+
+    $scope.submit = function(){
+        angular.extend($scope.data, AppService.getResponseData());
+        angular.extend($scope.data, $scope.setAction);
+
+        $scope.data.tripid = AppService.getId();
+
+        var url = appObject.calls.schedule.update;
+
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            if(data.status=="success")
+            {
+                AppService.closeEditList();
+            }
+
+        }).error(function(data, status, headers, config) {});
+
+    };
+
+    ons.ready(function(a) {
+        //$scope.tripId = AppService.getId();
         $scope.fetchData();
     });
 
