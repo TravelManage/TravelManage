@@ -23,6 +23,10 @@ var appObject = {
 
         schedule:{
             update:serverLink+"schedule"
+        },
+
+        template:{
+            update: serverLink+ "template"
         }
     }
 };

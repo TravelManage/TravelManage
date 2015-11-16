@@ -674,7 +674,6 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
     };
 
     $scope.showEditForm = function(){
-        //AppService.setId($scope.tripDetails.tripid);
         AppService.setDetailData($scope.tripDetails);
         app.baseNav.once("postpop", function(){
             $scope.fetchData();
@@ -743,6 +742,10 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
         AppService.setId($scope.tripDetails.tripid);
         //AppService.setDetailData($scope.schedules);
         AppService.openEditList("tripDetails", "tripScheduler");
+    };
+
+    $scope.saveAsTemplate = function(){
+        alert(1);
     };
 
     ons.ready(function(a) {
@@ -934,15 +937,6 @@ module.controller('SchedulerController', function($scope, $http, AppService) {
 module.controller('EditScheduleController', function($scope, $http, AppService) {
 
     $scope.setAction = {action:"add"};
-    /*$scope.data =   {
-     "notes": "",
-     "schedulename": "",
-     "scheduleid": "",
-     "startdate": "2011-5-30",
-     "enddate": "2011/5/30",
-     "starttime": "16:13:47",
-     "endtime": "16:13:47"
-     };*/
 
     $scope.data ={
         "notes": "schdeule",
@@ -950,8 +944,8 @@ module.controller('EditScheduleController', function($scope, $http, AppService) 
         "action": "add",
         "scheduleid": "",
         "startdate": "2011-5-30",
-        "enddate": "2011-5-30",
-        //"starttime": "16:13:47",
+        //"enddate": "2011-5-30",
+        "starttime": "16:13:47",
         //"endtime": "16:13:47",
         "tripid":"1"
 
@@ -964,10 +958,6 @@ module.controller('EditScheduleController', function($scope, $http, AppService) 
             $scope.data = AppService.getDetailData();
         }
     };
-
-    /*$scope.showEditForm = function(){
-     app.baseNav.pushPage("pages/tripScheduleEdit.html");
-     };*/
 
     $scope.submit = function(){
         angular.extend($scope.data, AppService.getResponseData());
@@ -994,6 +984,61 @@ module.controller('EditScheduleController', function($scope, $http, AppService) 
 
     ons.ready(function(a) {
         //$scope.tripId = AppService.getId();
+        $scope.fetchData();
+    });
+
+});
+
+
+module.controller('TemplateEditFormController', function($scope, $http, AppService) {
+
+    $scope.setAction ={
+        action:'add'
+    };
+
+    $scope.data =
+    {
+        "notes": "Template Notes",
+        "tripname": "Test  Template",
+        "tripid": ""
+    };
+
+
+
+    $scope.submit= function(){
+
+        angular.extend($scope.data, AppService.getResponseData());
+        angular.extend($scope.data, $scope.setAction);
+
+        var url = appObject.calls.template.update;
+
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+
+            if(data.status=="success")
+            {
+                AppService.closeEditList();
+            }
+
+        }).error(function(data, status, headers, config) {});
+    };
+
+    $scope.fetchData= function(){
+
+
+        if(AppService.getDetailData().tripid)
+        {
+            $scope.data = AppService.getDetailData();
+            $scope.setAction.action='update';
+
+        }
+    };
+
+    ons.ready(function(a) {
         $scope.fetchData();
     });
 
