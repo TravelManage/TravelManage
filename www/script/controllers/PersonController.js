@@ -152,6 +152,16 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
 
     };
 
+    $scope.assignFavourite = function(){
+        var data = {
+            "action": "assign",
+            "object": "people",
+            "profileid": $scope.details.profileid
+        };
+
+        AppService.assignFavourite(data);
+    };
+
     ons.ready(function() {
         $scope.fetchData();
     });
@@ -989,6 +999,45 @@ module.controller('EditScheduleController', function($scope, $http, AppService) 
 
 });
 
+module.controller('TemplatesController', function($scope, $http, AppService) {
+    $scope.templateList=[];
+
+    $scope.data =  {
+        "type": "template",
+        "tab": "all"
+    };
+    angular.extend($scope.data, AppService.getResponseData());
+
+
+    $scope.fetchData = function(){
+
+        var url = appObject.calls.fetchAll;
+        if(appObject.LOAD_STATIC){url ='data/tripList.json'; }
+        $http({
+            method: 'POST',
+            url: url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            $scope.templateList = data.listModel;
+            console.log(data);
+
+        }).error(function(data, status, headers, config) {
+        });
+    };
+
+
+    $scope.showDetails = function(id){
+        AppService.setId(id);
+        app.baseNav.pushPage("pages/tripDetails.html");
+        menu.close();
+    };
+
+    ons.ready(function(a) {
+        $scope.fetchData();
+    });
+
+});
 
 module.controller('TemplateEditFormController', function($scope, $http, AppService) {
 
@@ -1000,7 +1049,10 @@ module.controller('TemplateEditFormController', function($scope, $http, AppServi
     {
         "notes": "Template Notes",
         "tripname": "Test  Template",
-        "tripid": ""
+        "tripid": "",
+        "istemplate": "Y",
+        "templatename" :"new template"
+
     };
 
 

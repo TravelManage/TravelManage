@@ -1,0 +1,63 @@
+<ons-page ng-controller="TemplatesController" class="person">
+
+    <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">Manage Groups</div>
+        <div class="right">
+            <ons-toolbar-button>
+                <ons-icon icon="fa-plus" fixed-width="false" style="font-size: 26px; vertical-align: -4px" ng-click="showEditForm()"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+
+    <ons-tabbar>
+        <ons-tab page="tripList.html" active="true">
+            Active
+        </ons-tab>
+        <ons-tab page="tripList.html">
+            Tracking
+        </ons-tab>
+        <ons-tab page="tripList.html">
+            Archived
+        </ons-tab>
+    </ons-tabbar>
+
+    <ons-template id="tripList.html">
+        <div class="page-content">
+            <ons-scroller>
+                <ons-list class="plan-list">
+                    <ons-list-item modifier="chevron" class="plan" ng-repeat="trip in templateList" ng-click="showDetails(trip.id)">
+                        <ons-row>
+                            <ons-col width="80px" class="plan-left">
+                                <div class="plan-date">{{trip.startDate}}</div>
+                                <div class="plan-duration">{{trip.endDate}}</div>
+                            </ons-col>
+
+                            <ons-col width="6px" class="plan-center" class="{{trip.status}}">
+                            </ons-col>
+
+                            <ons-col class="plan-right">
+                                <div class="plan-name">{{trip.tripname}}</div>
+
+                                <div class="plan-info">
+                                    <div>
+                                        Group: {{trip.groupCount}}
+                                    </div>
+                                    <div>
+                                        People: {{trip.peopleCount}}
+                                    </div>
+
+                                    <div>
+                                        <ons-icon icon="fa-map-marker"></ons-icon> {{trip.from}} - {{trip.to}}
+                                    </div>
+                                </div>
+                            </ons-col>
+                        </ons-row>
+                    </ons-list-item>
+
+                </ons-list>
+            </ons-scroller>
+        </div>
+    </ons-template>
+
+</ons-page>

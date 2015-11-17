@@ -6,6 +6,7 @@ var appObject = {
         createUser:serverLink+"usercreate",
         fetchAll:serverLink+"fetchall",
         assign:serverLink+"mapping",
+        fav:serverLink+"favourite",
         person:{
             fetch:serverLink+"fetchall",
             update:serverLink+"profile",
@@ -34,7 +35,7 @@ var appObject = {
 
 var module = ons.bootstrap('my-app', ['onsen']);
 
-module.factory('AppService', function() {
+module.factory('AppService', function($http) {
     var callFromPage = "";
     var userData={};
     var responseData = {};
@@ -68,6 +69,18 @@ module.factory('AppService', function() {
 
         cleanDetailData: function(){
             dataBlock={};
+        },
+        assignFavourite: function(data){
+            $http({
+                'method': 'POST',
+                'url': appObject.calls.fav,
+                'data': data,
+                'dataType': 'json'
+            }).success(function(data, status, headers, config) {
+                alert("Success");
+
+            }).error(function(data, status, headers, config) {
+            });
         },
         editGroupList: function(pageLink){
             callFromPage = pageLink;
@@ -108,6 +121,11 @@ module.controller('AppController', function($scope, AppService) {
 
     $scope.openTrips = function(){
         app.baseNav.pushPage("pages/trips.html");
+        menu.close();
+    };
+
+    $scope.openTemplates = function(){
+        app.baseNav.pushPage("pages/templates.html");
         menu.close();
     };
 
