@@ -11,13 +11,13 @@
     </ons-toolbar>
 
     <ons-tabbar>
-        <ons-tab page="groupList.html" active="true">
+        <ons-tab page="groupList.html" ng-click="selectTab('active')">
             Active
         </ons-tab>
-        <ons-tab page="groupList.html">
+        <ons-tab page="groupList.html" ng-click="selectTab('tracking')">
             Tracking
         </ons-tab>
-        <ons-tab page="groupList.html">
+        <ons-tab page="groupList.html" active="true" ng-click="selectTab('all')">
             Archived
         </ons-tab>
     </ons-tabbar>

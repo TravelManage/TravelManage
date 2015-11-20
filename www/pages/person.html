@@ -12,14 +12,14 @@
 
 
     <ons-tabbar>
-        <ons-tab page="personList.html">
+        <ons-tab page="personList.html" ng-click="selectTab('active')">
             Active
         </ons-tab>
-        <ons-tab page="personList.html">
+        <ons-tab page="personList.html" ng-click="selectTab('tracking')">
             <div class="notification reply-notification" ons-tab-inactive>4</div>
             Tracking
         </ons-tab>
-        <ons-tab page="personList.html" active="true">
+        <ons-tab page="personList.html" active="true" ng-click="selectTab('all')">
             Archived
         </ons-tab>
     </ons-tabbar>

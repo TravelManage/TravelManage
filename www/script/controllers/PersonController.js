@@ -9,6 +9,7 @@ module.controller('PersonController', function($scope, $http, AppService) {
         "count": "",
         "tab": "all"
     };
+    $scope.currentTab = "all";
 
     angular.extend($scope.data, AppService.getResponseData());
     $scope.personData={};
@@ -17,8 +18,9 @@ module.controller('PersonController', function($scope, $http, AppService) {
     var url = appObject.calls.person.fetch;
     if(appObject.LOAD_STATIC){url ='data/personList.json'; }
 
-    $scope.fetchData = function(tab){
+    $scope.fetchData = function(){
 
+        $scope.data.tab = $scope.currentTab;
         $http({
             'method': 'POST',
             'url': url,
@@ -41,6 +43,11 @@ module.controller('PersonController', function($scope, $http, AppService) {
         //app.baseNav.pushPage("pages/personEditForm.html");
     };
 
+    $scope.selectTab = function(tab){
+        $scope.currentTab = tab;
+        $scope.fetchData();
+    };
+
     $scope.showPerson = function(id){
         AppService.setId(id);
         app.baseNav.pushPage("pages/personDetails.html");
@@ -48,7 +55,7 @@ module.controller('PersonController', function($scope, $http, AppService) {
     };
 
     ons.ready(function() {
-        $scope.fetchData("all");
+        $scope.fetchData();
     });
 });
 
@@ -80,7 +87,6 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
             dataType: 'json'
         }).success(function(data, status, headers, config) {
             $scope.details = data;
-            console.log($scope.details);
             $scope.fetchGroups(data.profileid);
             $scope.fetchTrips(data.profileid);
 
@@ -328,10 +334,14 @@ module.controller('GroupsController', function($scope, $http, AppService) {
         "count": "",
         "tab": "all"
     };
+    $scope.currentTab = "all";
+
     angular.extend($scope.data, AppService.getResponseData());
 
 
     $scope.fetchData = function(){
+        $scope.data.tab = $scope.currentTab;
+
         var url = appObject.calls.person.fetch;
         if(appObject.LOAD_STATIC){url ='data/groups.json'; }
 
@@ -357,6 +367,11 @@ module.controller('GroupsController', function($scope, $http, AppService) {
         AppService.setId(id);
         app.baseNav.pushPage("pages/groupDetails.html");
         menu.close();
+    };
+
+    $scope.selectTab = function(tab){
+        $scope.currentTab = tab;
+        $scope.fetchData();
     };
 
     ons.ready(function(a) {
@@ -654,11 +669,12 @@ module.controller('TripsController', function($scope, $http, AppService) {
         "type": "trip",
         "tab": "tracking"
     };
+    $scope.currentTab = "all";
     angular.extend($scope.data, AppService.getResponseData());
 
 
     $scope.fetchData = function(){
-
+        $scope.data.tab = $scope.currentTab;
         var url = appObject.calls.fetchAll;
         if(appObject.LOAD_STATIC){url ='data/tripList.json'; }
         $http({
@@ -683,6 +699,11 @@ module.controller('TripsController', function($scope, $http, AppService) {
         AppService.setId(id);
         app.baseNav.pushPage("pages/tripDetails.html");
         menu.close();
+    };
+
+    $scope.selectTab = function(tab){
+        $scope.currentTab = tab;
+        $scope.fetchData();
     };
 
     ons.ready(function(a) {
