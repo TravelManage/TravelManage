@@ -77,7 +77,6 @@ module.factory('AppService', function($http) {
                 'data': data,
                 'dataType': 'json'
             }).success(function(data, status, headers, config) {
-                alert("Success");
 
             }).error(function(data, status, headers, config) {
             });

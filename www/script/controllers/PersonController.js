@@ -16,7 +16,8 @@ module.controller('PersonController', function($scope, $http, AppService) {
 
     var url = appObject.calls.person.fetch;
     if(appObject.LOAD_STATIC){url ='data/personList.json'; }
-    $scope.fetchData = function(){
+
+    $scope.fetchData = function(tab){
 
         $http({
             'method': 'POST',
@@ -47,7 +48,7 @@ module.controller('PersonController', function($scope, $http, AppService) {
     };
 
     ons.ready(function() {
-        $scope.fetchData();
+        $scope.fetchData("all");
     });
 });
 
@@ -79,6 +80,7 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
             dataType: 'json'
         }).success(function(data, status, headers, config) {
             $scope.details = data;
+            console.log($scope.details);
             $scope.fetchGroups(data.profileid);
             $scope.fetchTrips(data.profileid);
 
@@ -152,12 +154,25 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
 
     };
 
-    $scope.assignFavourite = function(){
+    $scope.assignFavourite = function(isFav){
+
         var data = {
             "action": "assign",
             "object": "people",
             "profileid": $scope.details.profileid
         };
+
+        if(isFav)
+        {
+            data.action = "unassign";
+            $scope.details.favourite=false;
+        }else
+        {
+            $scope.details.favourite=true;
+        }
+
+
+        angular.extend(data, AppService.getResponseData());
 
         AppService.assignFavourite(data);
     };
@@ -463,6 +478,29 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
 
     };
 
+    $scope.assignFavourite = function(isFav){
+
+        var data = {
+            "action": "assign",
+            "object": "group",
+            "groupid": $scope.details.groupid
+        };
+
+        if(isFav)
+        {
+            data.action = "unassign";
+            $scope.details.favourite=false;
+        }else
+        {
+            $scope.details.favourite=true;
+        }
+
+
+        angular.extend(data, AppService.getResponseData());
+
+        AppService.assignFavourite(data);
+    };
+
     ons.ready(function(a) {
         $scope.fetchData();
     });
@@ -614,7 +652,7 @@ module.controller('TripsController', function($scope, $http, AppService) {
 
     $scope.data =  {
         "type": "trip",
-        "tab": "all"
+        "tab": "tracking"
     };
     angular.extend($scope.data, AppService.getResponseData());
 
@@ -756,6 +794,29 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
 
     $scope.saveAsTemplate = function(){
         alert(1);
+    };
+
+    $scope.assignFavourite = function(isFav){
+
+        var data = {
+            "action": "assign",
+            "object": "trip",
+            "tripid": $scope.tripDetails.tripid
+        };
+
+        if(isFav)
+        {
+            data.action = "unassign";
+            $scope.tripDetails.favourite=false;
+        }else
+        {
+            $scope.tripDetails.favourite=true;
+        }
+
+
+        angular.extend(data, AppService.getResponseData());
+
+        AppService.assignFavourite(data);
     };
 
     ons.ready(function(a) {
