@@ -3,8 +3,8 @@
 
         <div class="center">Update Schedule</div>
         <div class="right">
-            <ons-toolbar-button ng-click="submit()">
-                Done
+            <ons-toolbar-button ng-click="close()">
+                Close
             </ons-toolbar-button>
         </div>
     </ons-toolbar>
@@ -23,6 +23,12 @@
 
         <div class="form-row">
             <textarea class="textarea textarea--transparent width-full" placeholder="Notes" style="min-height: 200px;" ng-model="data.notes"></textarea>
+        </div>
+
+        <div class="vspc form-row">
+            <ons-button modifier="large--cta" ng-click="submit()">Submit</ons-button>
+            <br/>
+            <ons-button modifier="large--cta" ng-click="delete()">Delete</ons-button>
         </div>
 
     </div>

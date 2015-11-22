@@ -7,6 +7,7 @@ var appObject = {
         fetchAll:serverLink+"fetchall",
         assign:serverLink+"mapping",
         fav:serverLink+"favourite",
+        delete:serverLink+"delete",
         person:{
             fetch:serverLink+"fetchall",
             update:serverLink+"profile",
@@ -80,6 +81,25 @@ module.factory('AppService', function($http) {
 
             }).error(function(data, status, headers, config) {
             });
+        },
+
+        delete: function(data){
+
+            var url = appObject.calls.delete;
+
+            $http({
+                'method': 'POST',
+                'url': url,
+                'data': data,
+                'dataType': 'json'
+            }).success(function(data, status, headers, config) {
+
+                if(data.status=="success")
+                {
+                    alert("Success");
+                }
+
+            }).error(function(data, status, headers, config) {});
         },
         editGroupList: function(pageLink){
             callFromPage = pageLink;

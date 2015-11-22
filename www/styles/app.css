@@ -237,3 +237,5 @@ input[type=text], input[type=password] {
 
 .no-display{display:none !important;}
 .set-favourite{color:yellow;}
+
+.btn-danger{background: #eb482f !important;}

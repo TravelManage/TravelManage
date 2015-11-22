@@ -256,6 +256,32 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
         }
     };
 
+    $scope.delete = function(){
+        var data = {
+            "type": "people",
+            "action": "delete",
+            "profileid":AppService.getId()
+        };
+
+        angular.extend(data, AppService.getResponseData());
+
+        var url = appObject.calls.delete;
+
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+
+            if(data.status=="success")
+            {
+                alert("Success");
+            }
+
+        }).error(function(data, status, headers, config) {});
+    };
+
     ons.ready(function(a) {
         $scope.fetchData();
     });
@@ -588,6 +614,16 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
         }
     };
 
+    $scope.delete = function(){
+        var data = {
+            "type": "group",
+            "action": "delete",
+            "groupid":AppService.getDetailData().groupid
+        };
+        angular.extend(data, AppService.getResponseData());
+        AppService.delete(data);
+    };
+
     ons.ready(function(a) {
         $scope.fetchData();
     });
@@ -814,7 +850,8 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
     };
 
     $scope.saveAsTemplate = function(){
-        alert(1);
+        AppService.setDetailData($scope.tripDetails);
+        AppService.openEditList("tripDetails", "templateEditForm");
     };
 
     $scope.assignFavourite = function(isFav){
@@ -892,6 +929,32 @@ module.controller('TripEditFormController', function($scope, $http, AppService) 
             $scope.setAction.action='update';
 
         }
+    };
+
+    $scope.delete = function(){
+        var data = {
+            "type": "trip",
+            "action": "delete",
+            "tripid":AppService.getDetailData().tripid
+        };
+
+        angular.extend(data, AppService.getResponseData());
+
+        var url = appObject.calls.delete;
+
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+
+            if(data.status=="success")
+            {
+                alert("Success");
+            }
+
+        }).error(function(data, status, headers, config) {});
     };
 
     ons.ready(function(a) {
@@ -1051,6 +1114,10 @@ module.controller('EditScheduleController', function($scope, $http, AppService) 
         }
     };
 
+    $scope.close = function(){
+        AppService.closeEditList();
+    };
+
     $scope.submit = function(){
         angular.extend($scope.data, AppService.getResponseData());
         angular.extend($scope.data, $scope.setAction);
@@ -1072,6 +1139,16 @@ module.controller('EditScheduleController', function($scope, $http, AppService) 
 
         }).error(function(data, status, headers, config) {});
 
+    };
+
+    $scope.delete = function(){
+        var data = {
+            "type": "schedule",
+            "action": "delete",
+            "scheduleid":AppService.getDetailData().scheduleid
+        };
+        angular.extend(data, AppService.getResponseData());
+        AppService.delete(data);
     };
 
     ons.ready(function(a) {
@@ -1101,8 +1178,8 @@ module.controller('TemplatesController', function($scope, $http, AppService) {
             'data': $scope.data,
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
-            $scope.templateList = data.listModel;
             console.log(data);
+            $scope.templateList = data.listModel;
 
         }).error(function(data, status, headers, config) {
         });
@@ -1115,6 +1192,11 @@ module.controller('TemplatesController', function($scope, $http, AppService) {
         menu.close();
     };
 
+    $scope.selectTab = function(tab){
+        $scope.currentTab = tab;
+        $scope.fetchData();
+    };
+
     ons.ready(function(a) {
         $scope.fetchData();
     });
@@ -1124,17 +1206,17 @@ module.controller('TemplatesController', function($scope, $http, AppService) {
 module.controller('TemplateEditFormController', function($scope, $http, AppService) {
 
     $scope.setAction ={
-        action:'add'
+        action:'update'
     };
 
-    $scope.data =
-    {
-        "notes": "Template Notes",
-        "tripname": "Test  Template",
-        "tripid": "",
-        "istemplate": "Y",
-        "templatename" :"new template"
-
+    $scope.data ={
+        "notes": "TRIP",
+        "tripname": "Trip number 5",
+        "action": "add",
+        "tripid": "8",
+        "companyid" :"111",
+        "session_id": "c729d59c-fcd7-4048-b5b1-69da4c655418",
+        "istemplate": "Y"
     };
 
 
@@ -1145,7 +1227,6 @@ module.controller('TemplateEditFormController', function($scope, $http, AppServi
         angular.extend($scope.data, $scope.setAction);
 
         var url = appObject.calls.template.update;
-
         $http({
             'method': 'POST',
             'url': url,
@@ -1163,13 +1244,16 @@ module.controller('TemplateEditFormController', function($scope, $http, AppServi
 
     $scope.fetchData= function(){
 
+        var tripData = AppService.getDetailData();
+        $scope.data.tripid = tripData.tripid;
+        $scope.data.tripname = tripData.tripname;
+        $scope.data.notes = tripData.notes;
+        /*if(AppService.getDetailData().tripid)
+         {
+         $scope.data = AppService.getDetailData();
+         $scope.setAction.action='update';
 
-        if(AppService.getDetailData().tripid)
-        {
-            $scope.data = AppService.getDetailData();
-            $scope.setAction.action='update';
-
-        }
+         }*/
     };
 
     ons.ready(function(a) {
@@ -1199,4 +1283,3 @@ module.controller('EditEmployeeListController', function($scope, $http, AppServi
     });
 
 });
-
