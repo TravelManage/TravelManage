@@ -1,0 +1,81 @@
+<ons-page ng-controller="TemplateDetailController">
+    <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">Trip Details</div>
+        <div class="right">
+            <ons-toolbar-button>
+                <ons-icon icon="ion-android-star" ng-class="{'set-favourite':tripDetails.favourite}" fixed-width="false" style="font-size: 26px; vertical-align: -4px" ng-click="assignFavourite(tripDetails.favourite)"></ons-icon>
+            </ons-toolbar-button>
+            <ons-toolbar-button>
+                <ons-icon icon="ion-archive" fixed-width="false" style="font-size: 26px; vertical-align: -4px" ng-click="showEditForm()"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+
+    <ons-row class="profile-wrapper">
+        <ons-col>
+            <div class="profile-name">{{tripDetails.tripname}}</div>
+            <div class="profile-email"><ons-icon icon="fa-map-marker"></ons-icon> {{tripDetails.from}} - {{tripDetails.to}}</div>
+            <div class="profile-email"><ons-icon icon="fa-calendar-o"></ons-icon> {{tripDetails.startDate}} - {{tripDetails.endDate}}</div>
+        </ons-col>
+    </ons-row>
+
+    <ons-row class="profile-wrapper" style="margin-top:20px;">
+        <ons-col>
+
+            <div class="button-bar">
+                <div class="button-bar__item">
+                    <button class="button-bar__button" ng-click="showEditForm(tripDetails.tripid)">Edit</button>
+                </div>
+                <div class="button-bar__item">
+                    <button class="button-bar__button" ng-click="saveAsTrip()">Save as trip</button>
+                </div>
+
+                <div class="button-bar__item">
+                    <button class="button-bar__button">Delete</button>
+                </div>
+            </div>
+        </ons-col>
+    </ons-row>
+
+
+    <br/>
+    <div class="settings-header">Groups in this trip</div>
+
+    <ons-list modifier="inset" class="settings-list">
+        <ons-list-item modifier="chevron" ng-repeat="group in groups" ng-click="showGroupDetails()">
+            {{group.groupname}}
+        </ons-list-item>
+        <ons-list-item class="end-item" modifier="chevron" ng-click="editGroupList()">
+            Manage Group
+        </ons-list-item>
+    </ons-list>
+
+    <br/>
+    <div class="settings-header">Employees in this trip</div>
+
+    <ons-list modifier="inset" class="settings-list">
+        <ons-list-item ng-repeat="emp in tripDetails.employees">
+            {{emp.lastName}}, {{emp.firstName}}
+        </ons-list-item>
+        <ons-list-item class="end-item" modifier="chevron" ng-click="editEmpList()">
+            Manage Employees
+        </ons-list-item>
+    </ons-list>
+
+    <br/>
+
+    <ons-list modifier="inset" class="settings-list">
+        <ons-list-item modifier="chevron" ng-click="editScheduleList()">
+            Schedule
+        </ons-list-item>
+        <ons-list-item ng-repeat="schedule in schedules">
+            {{schedule.schedulename}}
+        </ons-list-item>
+    </ons-list>
+
+    <br/>
+    <br/>
+
+
+</ons-page>

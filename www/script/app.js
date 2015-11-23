@@ -28,7 +28,8 @@ var appObject = {
         },
 
         template:{
-            update: serverLink+ "template"
+            update: serverLink+ "trip",
+            duplicate: serverLink+ "template"
         }
     }
 };

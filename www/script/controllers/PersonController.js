@@ -1178,7 +1178,6 @@ module.controller('TemplatesController', function($scope, $http, AppService) {
             'data': $scope.data,
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
-            console.log(data);
             $scope.templateList = data.listModel;
 
         }).error(function(data, status, headers, config) {
@@ -1188,7 +1187,7 @@ module.controller('TemplatesController', function($scope, $http, AppService) {
 
     $scope.showDetails = function(id){
         AppService.setId(id);
-        app.baseNav.pushPage("pages/tripDetails.html");
+        app.baseNav.pushPage("pages/templateDetails.html");
         menu.close();
     };
 
@@ -1203,33 +1202,168 @@ module.controller('TemplatesController', function($scope, $http, AppService) {
 
 });
 
+module.controller('TemplateDetailController', function($scope, $http, AppService) {
+    $scope.tripDetails={};
+    $scope.groups=[];
+    $scope.schedules=[];
+
+    $scope.data = {
+        "tripid": "0"
+    };
+    $scope.data.tripid = AppService.getId();
+    angular.extend($scope.data, AppService.getResponseData());
+
+    $scope.fetchData = function(){
+        var url = appObject.calls.trip.fetch;
+        if(appObject.LOAD_STATIC){url ='data/tripDetails.json'; }
+
+        $http({
+            method: 'POST',
+            url: url,
+            'data': $scope.data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            $scope.tripDetails = data;
+            $scope.fetchGroup(data.tripid);
+            $scope.fetchSchedule(data.tripid);
+
+
+        }).error(function(data, status, headers, config) {
+        });
+    };
+
+    $scope.showEditForm = function(){
+        AppService.setDetailData($scope.tripDetails);
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
+        app.baseNav.pushPage('pages/tripEditForm.html');
+    };
+
+    $scope.showGroupDetails = function(){
+        app.baseNav.pushPage("pages/groupDetails.html");
+    };
+
+    $scope.fetchGroup = function(id){
+        var data = {
+            "type": "group",
+            "count": "",
+            "tab": "selected",
+            "tripid":id
+        };
+        angular.extend(data, AppService.getResponseData());
+
+        $http({
+            'method': 'POST',
+            'url': appObject.calls.fetchAll,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            $scope.groups = data.listModel;
+
+        }).error(function(data, status, headers, config) {
+        });
+    };
+
+    $scope.editGroupList = function(){
+        AppService.setDetailData({tripid:$scope.data.tripid});
+        AppService.openEditList("tripDetails", "groupManage");
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
+    };
+
+    $scope.editEmpList = function(){
+        AppService.openEditList("tripDetails", "employeeManager");
+    };
+
+    $scope.fetchSchedule = function(id){
+        var data = {
+            "type": "schedule",
+            "count": "",
+            "tab": "trip",
+            "tripid":id
+        };
+        angular.extend(data, AppService.getResponseData());
+
+        $http({
+            'method': 'POST',
+            'url': appObject.calls.fetchAll,
+            'data': data,
+            'dataType': 'json'
+        }).success(function(data, status, headers, config) {
+            $scope.schedules = data.listModel;
+
+        }).error(function(data, status, headers, config) {});
+    };
+
+    $scope.editScheduleList= function(){
+        AppService.setId($scope.tripDetails.tripid);
+        //AppService.setDetailData($scope.schedules);
+        AppService.openEditList("tripDetails", "tripScheduler");
+    };
+
+    $scope.saveAsTrip = function(){
+        var data = $scope.tripDetails;
+        data.duplicate = true;
+        AppService.setDetailData(data);
+        AppService.openEditList("tripDetails", "templateEditForm");
+    };
+
+    $scope.assignFavourite = function(isFav){
+
+        var data = {
+            "action": "assign",
+            "object": "trip",
+            "tripid": $scope.tripDetails.tripid
+        };
+
+        if(isFav)
+        {
+            data.action = "unassign";
+            $scope.tripDetails.favourite=false;
+        }else
+        {
+            $scope.tripDetails.favourite=true;
+        }
+
+
+        angular.extend(data, AppService.getResponseData());
+
+        AppService.assignFavourite(data);
+    };
+
+    ons.ready(function(a) {
+        $scope.fetchData();
+    });
+
+});
+
 module.controller('TemplateEditFormController', function($scope, $http, AppService) {
 
     $scope.setAction ={
         action:'update'
     };
 
+    $scope.url = appObject.calls.template.update;
+
     $scope.data ={
         "notes": "TRIP",
         "tripname": "Trip number 5",
         "action": "add",
         "tripid": "8",
-        "companyid" :"111",
-        "session_id": "c729d59c-fcd7-4048-b5b1-69da4c655418",
         "istemplate": "Y"
     };
-
-
 
     $scope.submit= function(){
 
         angular.extend($scope.data, AppService.getResponseData());
         angular.extend($scope.data, $scope.setAction);
 
-        var url = appObject.calls.template.update;
+        //var url = appObject.calls.template.update;
         $http({
             'method': 'POST',
-            'url': url,
+            'url': $scope.url,
             'data': $scope.data,
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
@@ -1243,8 +1377,12 @@ module.controller('TemplateEditFormController', function($scope, $http, AppServi
     };
 
     $scope.fetchData= function(){
-
         var tripData = AppService.getDetailData();
+        if(tripData.duplicate){
+            $scope.url = appObject.calls.template.duplicate;
+        }
+
+
         $scope.data.tripid = tripData.tripid;
         $scope.data.tripname = tripData.tripname;
         $scope.data.notes = tripData.notes;
