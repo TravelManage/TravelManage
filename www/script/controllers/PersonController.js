@@ -98,7 +98,7 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
         var data = {
             "type": "group",
             "count": "",
-            "tab": "all",
+            "tab": "selected",
             "profileid":id
         };
         angular.extend(data, AppService.getResponseData());
@@ -134,7 +134,6 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
             'dataType': 'json'
         }).success(function(data, status, headers, config) {
             if(data.status="success"){
-                //$scope.people = data.listModel;
                 $scope.trips = data.listModel;
             }
 
@@ -142,7 +141,8 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
         });
     };
 
-    $scope.showTripDetails = function(){
+    $scope.showTripDetails = function(id){
+        AppService.setId(id);
         app.baseNav.pushPage("pages/tripDetails.html");
     };
 
@@ -386,6 +386,7 @@ module.controller('GroupsController', function($scope, $http, AppService) {
 
 
     $scope.showEditForm = function(){
+        AppService.setDetailData({});
         app.baseNav.pushPage("pages/groupEditForm.html");
     };
 
@@ -589,7 +590,6 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
         if(AppService.getDetailData().groupid)
         {
             $scope.data = AppService.getDetailData();
-
             $scope.setAction.action='update';
 
         }
@@ -728,6 +728,7 @@ module.controller('TripsController', function($scope, $http, AppService) {
 
 
     $scope.showEditForm = function(){
+        AppService.setDetailData({});
         app.baseNav.pushPage("pages/tripEditForm.html");
     };
 
