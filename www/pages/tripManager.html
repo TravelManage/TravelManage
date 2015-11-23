@@ -18,7 +18,7 @@
 
     <div>
         <ons-list>
-            <ons-list-item modifier="tappable" ng-repeat="trip in tripList | filter:name">
+            <ons-list-item modifier="tappable" ng-repeat="trip in tripList | filter:name" ng-class="{'no-display': trip.istemplate=='true'}">
                 <label class="checkbox checkbox--list-item">
                     <input type="checkbox" ng-model="trip.selected" ng-change="setAssign(trip.id, trip.selected)" >
                     <div class="checkbox__checkmark checkbox--list-item__checkmark"></div>

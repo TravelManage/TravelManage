@@ -50,7 +50,7 @@
     <div class="settings-header">Assigned to Trips</div>
 
     <ons-list modifier="inset" class="settings-list">
-        <ons-list-item modifier="chevron" ng-repeat="trip in trips"  ng-click="showTripDetails()">
+        <ons-list-item modifier="chevron" ng-repeat="trip in trips"  ng-click="showTripDetails(trip.id)">
             {{trip.tripname}}
         </ons-list-item>
         <ons-list-item class="end-item" modifier="chevron" ng-click="editTripList()">

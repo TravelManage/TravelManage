@@ -507,7 +507,8 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
         app.baseNav.pushPage("pages/personDetails.html");
     };
 
-    $scope.showTripDetails = function(){
+    $scope.showTripDetails = function(id){
+        AppService.setId(id);
         app.baseNav.pushPage("pages/tripDetails.html");
     };
 
