@@ -84,23 +84,38 @@ module.factory('AppService', function($http) {
             });
         },
 
-        delete: function(data){
+        delete: function(data, page){
 
-            var url = appObject.calls.delete;
+            ons.notification.confirm({
+                message: 'Are you sure you want to delete?',
+                modifier: 'material',
+                callback: function(idx) {
+                    switch (idx) {
+                        case 0:
+                            break;
+                        case 1:
+                            var url = appObject.calls.delete;
 
-            $http({
-                'method': 'POST',
-                'url': url,
-                'data': data,
-                'dataType': 'json'
-            }).success(function(data, status, headers, config) {
+                            $http({
+                                'method': 'POST',
+                                'url': url,
+                                'data': data,
+                                'dataType': 'json'
+                            }).success(function(data, status, headers, config) {
 
-                if(data.status=="success")
-                {
-                    alert("Success");
+                                ons.notification.alert({
+                                    message: 'Data deleted.',
+                                    modifier: 'material'
+                                });
+                                app.baseNav.popPage();
+
+
+                            }).error(function(data, status, headers, config) {});
+                            break;
+                    }
                 }
+            });
 
-            }).error(function(data, status, headers, config) {});
         },
         editGroupList: function(pageLink){
             callFromPage = pageLink;

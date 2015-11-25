@@ -39,8 +39,10 @@ module.controller('PersonController', function($scope, $http, AppService) {
 
     $scope.create=function(){
         AppService.setId("");
+        app.baseNav.once("postpop", function(){
+            $scope.fetchData();
+        });
         AppService.openEditList("person", "personEditForm");
-        //app.baseNav.pushPage("pages/personEditForm.html");
     };
 
     $scope.selectTab = function(tab){
@@ -51,7 +53,9 @@ module.controller('PersonController', function($scope, $http, AppService) {
     $scope.showPerson = function(id){
         AppService.setId(id);
         app.baseNav.pushPage("pages/personDetails.html");
-        menu.close();
+        /*app.baseNav.once("postpop", function(){
+         $scope.fetchData();
+         });*/
     };
 
     ons.ready(function() {
@@ -68,6 +72,7 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
     $scope.showEditForm = function(){
         AppService.setId($scope.details.profileid);
         app.baseNav.once("postpop", function(){
+            alert(1);
             $scope.fetchData();
         });
         app.baseNav.pushPage('pages/personEditForm.html');
@@ -183,6 +188,18 @@ module.controller('PersonDetailsController', function($scope, $http, AppService)
         AppService.assignFavourite(data);
     };
 
+    $scope.delete = function(){
+
+        var data = {
+            "type": "people",
+            "action": "delete",
+            "profileid":$scope.data.profileid
+        };
+
+        angular.extend(data, AppService.getResponseData());
+        AppService.delete(data, "person");
+    };
+
     ons.ready(function() {
         $scope.fetchData();
     });
@@ -254,32 +271,6 @@ module.controller('PersonEditFormController', function($scope, $http, AppService
             }).error(function(data, status, headers, config) {
             });
         }
-    };
-
-    $scope.delete = function(){
-        var data = {
-            "type": "people",
-            "action": "delete",
-            "profileid":AppService.getId()
-        };
-
-        angular.extend(data, AppService.getResponseData());
-
-        var url = appObject.calls.delete;
-
-        $http({
-            'method': 'POST',
-            'url': url,
-            'data': data,
-            'dataType': 'json'
-        }).success(function(data, status, headers, config) {
-
-            if(data.status=="success")
-            {
-                alert("Success");
-            }
-
-        }).error(function(data, status, headers, config) {});
     };
 
     ons.ready(function(a) {
@@ -544,6 +535,16 @@ module.controller('GroupDetailController', function($scope, $http, AppService) {
         AppService.assignFavourite(data);
     };
 
+    $scope.delete = function(){
+        var data = {
+            "type": "group",
+            "action": "delete",
+            "groupid":$scope.data.groupid
+        };
+        angular.extend(data, AppService.getResponseData());
+        AppService.delete(data);
+    };
+
     ons.ready(function(a) {
         $scope.fetchData();
     });
@@ -613,16 +614,6 @@ module.controller('GroupEditFormController', function($scope, $http, AppService)
             }).error(function(data, status, headers, config) {
             });
         }
-    };
-
-    $scope.delete = function(){
-        var data = {
-            "type": "group",
-            "action": "delete",
-            "groupid":AppService.getDetailData().groupid
-        };
-        angular.extend(data, AppService.getResponseData());
-        AppService.delete(data);
     };
 
     ons.ready(function(a) {
@@ -879,6 +870,18 @@ module.controller('TripDetailController', function($scope, $http, AppService) {
         AppService.assignFavourite(data);
     };
 
+    $scope.delete = function(){
+            var data = {
+                "type": "trip",
+                "action": "delete",
+                "tripid":$scope.data.tripid
+            };
+
+            angular.extend(data, AppService.getResponseData());
+
+            AppService.delete(data);
+        };
+
     ons.ready(function(a) {
         $scope.fetchData();
     });
@@ -931,32 +934,6 @@ module.controller('TripEditFormController', function($scope, $http, AppService) 
             $scope.setAction.action='update';
 
         }
-    };
-
-    $scope.delete = function(){
-        var data = {
-            "type": "trip",
-            "action": "delete",
-            "tripid":AppService.getDetailData().tripid
-        };
-
-        angular.extend(data, AppService.getResponseData());
-
-        var url = appObject.calls.delete;
-
-        $http({
-            'method': 'POST',
-            'url': url,
-            'data': data,
-            'dataType': 'json'
-        }).success(function(data, status, headers, config) {
-
-            if(data.status=="success")
-            {
-                alert("Success");
-            }
-
-        }).error(function(data, status, headers, config) {});
     };
 
     ons.ready(function(a) {
