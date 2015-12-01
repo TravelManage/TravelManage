@@ -55,8 +55,7 @@ module.controller('CompanyEditController', function($scope, $http, AppService) {
 
     $scope.submit = function(){
         var link = serverLink +"companycreate";
-        console.log(data);
-        return;
+   
         $http({
             'method': 'POST',
             'url': link,
